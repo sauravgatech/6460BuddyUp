@@ -1,0 +1,67 @@
+Login Page:
+-----------
+
+EmailAddress: TextBox
+Password: TextBox
+Login: Button
+Reset: Button
+Forget Password: Hyperlink
+Register: Hyperlink
+
+Register Page:
+--------------
+
+Name: TextBox
+EmailAddress: TextBox
+Password: TextBox
+Confirm Password: TextBox
+Security Question 1: Dropdown
+Security Question 1 Answer: TextBox
+Security Question 2: Dropdown
+Security Question 2 Answer: TextBox
+Security Question 3 : Dropdown
+Security Question 3 Answer: TextBox
+Register : Button
+Reset: Button
+Already Have an Account? Login: Hyperlink
+
+Student Home Page : Dashboard
+------------------------------
+
+Case 1: Not registered in any course
+***
+You are not registered in any course. Please select a course to register. : Text
+Course List: Dropdown
+Register: Button
+Reset: Button
+
+
+Case 2: Registered in Multiple Courses
+***
+Select a course to proceed. : Text
+Course 1 : Button
+Course 2 : Button
+
+Case 3: Registered in One course / One course Selected
+***
+Case 3a: Not enrolled in any group
+###
+Suggested Groups: List of Groups
+Interested Groups: List of Groups
+View All Groups: Button
+
+Case 3b: Enrolled in a group
+###
+Group Detail Page
+Button: UnEnroll
+
+Group Detail Page
+---------------------
+
+Group Name: Text
+Objective: Text
+
+Other Details: Collapsable Group
+
+Comments: List
+
