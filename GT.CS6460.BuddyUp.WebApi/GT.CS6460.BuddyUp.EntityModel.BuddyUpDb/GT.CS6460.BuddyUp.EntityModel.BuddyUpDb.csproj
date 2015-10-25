@@ -48,9 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnswerChoice.cs" />
+    <Compile Include="AuditBase.cs" />
     <Compile Include="BuddyUpDb.cs" />
+    <Compile Include="Course.cs" />
+    <Compile Include="CourseUserRole.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Question.cs" />
+    <Compile Include="QuestionType.cs" />
+    <Compile Include="Role.cs" />
+    <Compile Include="UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
