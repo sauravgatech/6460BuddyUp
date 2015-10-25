@@ -79,6 +79,16 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name="Security Question")]
+        public string SecurityQuestion { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Security Answer")]
+        public string SecurityAnswer { get; set; }
     }
 
     public class ResetPasswordViewModel

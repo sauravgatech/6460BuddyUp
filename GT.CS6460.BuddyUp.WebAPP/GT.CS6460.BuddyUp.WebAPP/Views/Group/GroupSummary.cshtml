@@ -1,0 +1,95 @@
+﻿@model GT.CS6460.BuddyUp.WebAPP.Models.GroupListModel
+@{
+    ViewBag.Title = "GroupSummary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Group Summary</h2>
+<hr />
+<h3><u>Suggested Groups</u></h3>
+@{
+    int indexSize = Model.SuggestedGroups.Count;
+    for (int i = 0; i < indexSize; i = i + 3)
+    {
+        <div class="row">
+            @if (i < indexSize)
+            {
+                <div class="col-lg-4">
+                    <h4>@Model.SuggestedGroups.ElementAt(i).GroupName</h4>
+                    <br />
+                    <span><i>@Model.SuggestedGroups.ElementAt(i).TimeZone</i></span>
+                    <br />
+                    <span>@Model.SuggestedGroups.ElementAt(i).Objective</span>
+                    <button type="button" class="btn btn-info pull-right">View Group</button>
+                </div>
+            }
+            @if (i + 1 < indexSize)
+            {
+                <div class="col-lg-4">
+                    <h4>@Model.SuggestedGroups.ElementAt(i+1).GroupName</h4>
+                    <br />
+                    <span><i>@Model.SuggestedGroups.ElementAt(i+1).TimeZone</i></span>
+                    <br />
+                    <span>@Model.SuggestedGroups.ElementAt(i+1).Objective</span>
+                    <button type="button" class="btn btn-info pull-right">View Group</button>
+                </div>
+            }
+            @if (i + 2 < indexSize)
+            {
+                <div class="col-lg-4">
+                    <h4>@Model.SuggestedGroups.ElementAt(i+2).GroupName</h4>
+                    <br />
+                    <span><i>@Model.SuggestedGroups.ElementAt(i+2).TimeZone</i></span>
+                    <br />
+                    <span>@Model.SuggestedGroups.ElementAt(i+2).Objective</span>
+                    <button type="button" class="btn btn-info pull-right">View Group</button>
+                </div>
+            }
+        </div>
+        <hr />
+    }
+}
+<h3><u>All Groups</u></h3>
+@{
+    indexSize = Model.SuggestedGroups.Count;
+    for (int i = 0; i < indexSize; i = i + 3)
+    {
+        <div class="row">
+            @if (i < indexSize)
+            {
+                <div class="col-lg-4">
+                    <h4>@Model.AllGroups.ElementAt(i).GroupName</h4>
+                    <br />
+                    <span><i>@Model.AllGroups.ElementAt(i).TimeZone</i></span>
+                    <br />
+                    <span>@Model.AllGroups.ElementAt(i).Objective</span>
+                    <button type="button" class="btn btn-info pull-right">View Group</button>
+                </div>
+            }
+            @if (i + 1 < indexSize)
+            {
+                <div class="col-lg-4">
+                    <h4>@Model.AllGroups.ElementAt(i + 1).GroupName</h4>
+                    <br />
+                    <span><i>@Model.AllGroups.ElementAt(i + 1).TimeZone</i></span>
+                    <br />
+                    <span>@Model.AllGroups.ElementAt(i + 1).Objective</span>
+                    <button type="button" class="btn btn-info pull-right">View Group</button>
+                </div>
+            }
+            @if (i + 2 < indexSize)
+            {
+                <div class="col-lg-4">
+                    <h4>@Model.AllGroups.ElementAt(i + 2).GroupName</h4>
+                    <br />
+                    <span><i>@Model.AllGroups.ElementAt(i + 2).TimeZone</i></span>
+                    <br />
+                    <span>@Model.AllGroups.ElementAt(i + 2).Objective</span>
+                    <button type="button" class="btn btn-info pull-right">View Group</button>
+                </div>
+            }
+        </div>
+        <hr />
+    }
+}
+<h3><u>Didn't find a suitable group?</u></h3> <button type="button" class="btn btn-info">Create a Group</button>

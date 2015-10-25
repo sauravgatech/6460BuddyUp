@@ -29,5 +29,7 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<GT.CS6460.BuddyUp.WebAPP.Models.GroupDetailModel> GroupDetailModels { get; set; }
     }
 }

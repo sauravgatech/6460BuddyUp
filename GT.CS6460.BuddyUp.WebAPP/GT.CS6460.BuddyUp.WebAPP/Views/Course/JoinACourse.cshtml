@@ -1,0 +1,49 @@
+﻿@model GT.CS6460.BuddyUp.WebAPP.Models.JoinACourseQuestionnaireModel
+@{
+    ViewBag.Title = "Join A Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <section id="joinACourseForm">
+            @using (Html.BeginForm("JoinACourse", "Course", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <h4>Please answer the below questionnaie to join the course:</h4>
+                <hr />
+                foreach (var qa in Model.questionAnswerSet)
+                { 
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label(qa.Question)
+                        <div class="col-md-10">
+                            @if(qa.QuestionType == GT.CS6460.BuddyUp.WebAPP.Models.QuestionType.MultipleChoice)
+                            {
+                                @Html.RadioButton(qa.Question, qa.Choice1) @qa.Choice1 <br />
+                                @Html.RadioButton(qa.Question, qa.Choice2) @qa.Choice2 <br />
+                                @Html.RadioButton(qa.Question, qa.Choice3) @qa.Choice3 <br />
+                                @Html.RadioButton(qa.Question, qa.Choice4)@qa.Choice4 <br />
+                            }
+                            else
+                            {
+                                @Html.TextBox(qa.Question)
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Submit" class="btn btn-default" />
+                    </div>
+                </div>
+                
+            }
+        </section>
+        @*</div>
+            <div class="col-md-4">
+                <section id="socialLoginForm">
+                    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                </section>
+            </div>*@
+    </div>
+</div>
+
