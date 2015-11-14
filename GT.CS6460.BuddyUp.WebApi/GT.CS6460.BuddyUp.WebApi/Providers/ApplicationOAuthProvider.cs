@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using GT.CS6460.BuddyUp.WebApi.Models;
+//using GT.CS6460.BuddyUp.WebApi.Models;
 
 namespace GT.CS6460.BuddyUp.WebApi.Providers
 {

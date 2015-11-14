@@ -12,6 +12,8 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Net.Http.Formatting;
+using Newtonsoft.Json;
 #if Handle_PageResultOfT
 using System.Web.Http.OData;
 #endif
@@ -33,6 +35,11 @@ namespace GT.CS6460.BuddyUp.WebApi.Areas.HelpPage
             Justification = "Part of a URI.")]
         public static void Register(HttpConfiguration config)
         {
+            config.Formatters.Clear();
+            config.Formatters.Add(new JsonMediaTypeFormatter());
+            config.Formatters.Add(new XmlMediaTypeFormatter());
+            config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/Bin/GT.CS6460.BuddyUp.Controllers.xml")));
+            config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/Bin/GT.CS6460.BuddyUp.DomainDto.xml")));
             //// Uncomment the following to use the documentation from XML documentation file.
             //config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
 
