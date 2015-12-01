@@ -72,8 +72,15 @@ namespace GT.CS6460.BuddyUp.DomainModel
                 maxSessionTime = isPasswordExpire ? 30 : 120,
                 remainingTime = isPasswordExpire ? 30 : 120,
                 passwordExpired = isPasswordExpire,
-                message = isPasswordExpire ? "Password expired. Use this token to reset password." : null
-
+                message = isPasswordExpire ? "Password expired. Use this token to reset password." : null,
+                user = new UserGetResponse()
+                {
+                    emailId = up.EmailId,
+                    firstName = up.FirstName,
+                    lastName = up.LastName,
+                    isAdmin = (up.isAdmin == null) ? false : (bool) up.isAdmin,
+                    UserCourseDetails = mapCourseDetails(up.CourseUserRoles)
+                }
             };
 
             _repSessionToken.Add(new SessionToken
@@ -88,6 +95,22 @@ namespace GT.CS6460.BuddyUp.DomainModel
             });
             _uow.Commit();
             return t;
+        }
+
+        private List<UserCourseDetail> mapCourseDetails(ICollection<CourseUserRole> courseUserRoles)
+        {
+            List<UserCourseDetail> userCourseDetails = new List<UserCourseDetail>();
+            foreach(CourseUserRole courseUserRole in courseUserRoles)
+            {
+                UserCourseDetail ucd = new UserCourseDetail()
+                {
+                    courseCode = courseUserRole.Course.CourseCode,
+                    CourseName = courseUserRole.Course.CourseName,
+                    RoleCode = courseUserRole.Role.RoleCode
+                };
+                userCourseDetails.Add(ucd);
+            }
+            return userCourseDetails;
         }
 
         private bool IsCorrectPassword(string userHashedPassword, string enteredPlainTextPassword)

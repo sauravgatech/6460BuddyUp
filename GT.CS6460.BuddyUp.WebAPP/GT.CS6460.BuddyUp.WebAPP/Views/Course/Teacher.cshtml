@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Teacher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Hello @MvcApplication.userName</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Below are the courses you can edit:</h4>
+            @foreach (var course in MvcApplication.courses)
+            {
+                <div class="col-md-10">
+                    @Html.ActionLink(course.Key, "CourseTeacher", "Course", new { id = course.Key }) - @course.Value
+                </div>
+    
+            }
+            <div class="col-md-10">
+                <input type="button" class="btn btn-info pull-right" value="Create A Course" onclick="@("window.location.href='" + @Url.Action("Create", "Course") + "'");" />
+                
+            </div>
+            </div>
+        </div>
+

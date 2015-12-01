@@ -1,0 +1,21 @@
+﻿@model List<GT.CS6460.BuddyUp.WebAPP.Models.CourseUser>
+
+@using (Html.BeginForm())
+{
+    @foreach (var item in Model)
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => item.emailId, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => item.emailId, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => item.emailId, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => item.role, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => item.role, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => item.role, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+
+}

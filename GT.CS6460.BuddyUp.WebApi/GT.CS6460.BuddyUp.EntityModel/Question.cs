@@ -10,9 +10,6 @@ namespace GT.CS6460.BuddyUp.EntityModel
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int QuestionId { get; set; }
 
-        [StringLength(32)]
-        public string QuestionCode { get; set; }
-
         [StringLength(128)]
         public string QuestionText { get; set; }
 

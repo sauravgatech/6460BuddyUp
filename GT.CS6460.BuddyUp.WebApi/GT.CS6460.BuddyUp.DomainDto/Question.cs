@@ -10,9 +10,9 @@ namespace GT.CS6460.BuddyUp.DomainDto
     public class Question
     {
         /// <summary>
-        /// Question Code
+        /// Question Id
         /// </summary>
-        public string questionCode { get; set; }
+        public int questionId { get; set; }
         /// <summary>
         /// Question Text
         /// </summary>

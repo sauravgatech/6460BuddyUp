@@ -38,7 +38,7 @@ namespace GT.CS6460.BuddyUp.WebApi.Areas.HelpPage
             config.Formatters.Clear();
             config.Formatters.Add(new JsonMediaTypeFormatter());
             config.Formatters.Add(new XmlMediaTypeFormatter());
-            config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/Bin/GT.CS6460.BuddyUp.Controllers.xml")));
+            config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/Bin/GT.CS6460.BuddyUp.Controllers.XML")));
             config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/Bin/GT.CS6460.BuddyUp.DomainDto.xml")));
             //// Uncomment the following to use the documentation from XML documentation file.
             //config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));

@@ -19,6 +19,17 @@ namespace GT.CS6460.BuddyUp.EntityModel
         [ForeignKey("Questionnaire")]
         public int? QuestionnaireId { get; set; }
 
+        [ForeignKey("GroupType")]
+        public int? PrefGroupTypeId { get; set; }
+
+        public int? PrefGroupSize { get; set; }
+
+        public bool? SimilarSkillSetPreffered { get; set; }
+
+        public string DesiredSkillSets { get; set; }
+
+        public virtual GroupType GroupType { get; set; }
+
         public virtual Questionnaire Questionnaire { get; set; }
 
         public virtual ICollection<CourseUserRole> CourseUserRoles { get; set; }

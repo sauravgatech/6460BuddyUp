@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Principal;
 
 namespace GT.CS6460.BuddyUp.DomainDto
 {
     /// <summary>
     /// Token Response after authentication
     /// </summary>
-    public class Token
+    public class Token //: IPrincipal
     {
         /// <summary>
         /// Token with the prefix "GTToken "
@@ -31,6 +32,22 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// Message to the user
         /// </summary>
         public string message { get; set; }
+
+        /// <summary>
+        /// User Details 
+        /// </summary>
+        public UserGetResponse user { get; set; }
+
+        //public IIdentity Identity
+        //{
+        //    get { return user; }
+        //}
+
+        public bool IsInRole(string role)
+        {
+            if (null == this.user || null == this.user.UserCourseDetails) return false;
+            return this.user.UserCourseDetails.Any(r => r.RoleCode.Equals(role, StringComparison.OrdinalIgnoreCase)); //== role);
+        }
 
     }
 }

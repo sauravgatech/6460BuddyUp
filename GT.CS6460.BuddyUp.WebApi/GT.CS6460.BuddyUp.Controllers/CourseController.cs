@@ -20,9 +20,11 @@ namespace GT.CS6460.BuddyUp.Controllers
     [RoutePrefix("api/course")]
     public class CourseController : ApiController
     {
-        public CourseController()
-        {
+        private ICourse _Course;
 
+        public CourseController(ICourse Course)
+        {
+            _Course = Course;
         }
 
         /// <summary>
@@ -31,9 +33,21 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <param name="request">Request to add course</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
         [HttpPost]
-        public HttpResponseMessage Add(CourseAddRequest request)
+        public HttpResponseMessage Add([FromBody] CourseAddRequest request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _Course.Add(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -42,9 +56,21 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <param name="request">Request to update course</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
         [HttpPut]
-        public HttpResponseMessage Update(CourseUpdateRequest request)
+        public HttpResponseMessage Update([FromBody] CourseUpdateRequest request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _Course.Update(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -55,7 +81,19 @@ namespace GT.CS6460.BuddyUp.Controllers
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<CourseGetResponse> response = _Course.Get();
+                return Request.CreateResponse<IEnumerable<CourseGetResponse>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -66,7 +104,19 @@ namespace GT.CS6460.BuddyUp.Controllers
         [HttpGet]
         public HttpResponseMessage Get(string courseCode)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<CourseGetResponse> response = _Course.Get(courseCode);
+                return Request.CreateResponse<IEnumerable<CourseGetResponse>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>

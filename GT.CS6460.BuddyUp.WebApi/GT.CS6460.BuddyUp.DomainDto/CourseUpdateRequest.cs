@@ -22,9 +22,31 @@ namespace GT.CS6460.BuddyUp.DomainDto
         public string CourseName { get; set; }
 
         /// <summary>
-        /// Questionnaire
+        /// Questionnaire Code
         /// </summary>
-        public Questionnaire Questionnaire { get; set; }
+        public string QuestionnaireCode { get; set; }
 
+        /// <summary>
+        /// List of new users to be added
+        /// </summary>
+        public List<CourseUpdateUser> CourseNewUsers { get; set; }
+
+        /// <summary>
+        /// List of users to be removed
+        /// </summary>
+        public List<CourseUpdateUser> CourseDeleteUsers { get; set; }
+    }
+
+    public class CourseUpdateUser
+    {
+        /// <summary>
+        /// Users Email Id
+        /// </summary>
+        public string emailId { get; set; }
+
+        /// <summary>
+        /// User Role in the course
+        /// </summary>
+        public string roleCode { get; set; }
     }
 }

@@ -16,9 +16,11 @@ namespace GT.CS6460.BuddyUp.Controllers
     [RoutePrefix("api/role")]
     public class RoleController : ApiController
     {
-        public RoleController()
-        {
+        private IRole _role;
 
+        public RoleController(IRole role)
+        {
+            _role = role;
         }
         /// <summary>
         /// Add a new role
@@ -26,9 +28,21 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <param name="request">Role</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
         [HttpPost]
-        public HttpResponseMessage Add(Role request)
+        public HttpResponseMessage Add([FromBody] Role request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _role.Add(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -37,9 +51,21 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <param name="request">Role</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
         [HttpPut]
-        public HttpResponseMessage Update(Role request)
+        public HttpResponseMessage Update([FromBody] Role request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _role.Update(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -50,7 +76,19 @@ namespace GT.CS6460.BuddyUp.Controllers
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<DomainDto.Role> response = _role.Get();
+                return Request.CreateResponse<IEnumerable<DomainDto.Role>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -62,7 +100,19 @@ namespace GT.CS6460.BuddyUp.Controllers
         [HttpGet]
         public HttpResponseMessage Get(string roleCode)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<DomainDto.Role> response = _role.Get(roleCode);
+                return Request.CreateResponse<IEnumerable<DomainDto.Role>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>

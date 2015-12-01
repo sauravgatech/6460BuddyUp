@@ -13,7 +13,7 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201511131633351_InitialCreate"; }
+            get { return "201511301527543_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

@@ -26,5 +26,10 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
 
             return View();
         }
+
+        public ActionResult Admin()
+        {
+            return View();
+        }
     }
 }

@@ -4,11 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GT.CS6460.BuddyUp.WebAPP.Models;
+using System.Threading.Tasks;
+using GT.CS6460.BuddyUp.DomainDto;
+using GT.CS6460.BuddyUp.Platform.Communicator;
 
 namespace GT.CS6460.BuddyUp.WebAPP.Controllers
 {
     public class CourseController : Controller
     {
+        private CourseCommunicator _courseCom = new CourseCommunicator();
         // GET: Course
         public ActionResult JoinACourse()
         {
@@ -38,6 +42,96 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
             }
                 jac.questionAnswerSet = qas;
             return View(jac);
+        }
+
+        public ActionResult UnregisteredTeacher()
+        {
+            ViewBag.User = MvcApplication.userName;
+            return View();
+        }
+
+        public ActionResult UnregisteredStudent()
+        {
+            ViewBag.User = MvcApplication.userName;
+            return View();
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult Create()
+        {
+            ViewBag.User = MvcApplication.userName;
+            //CreateCourseModel ccm = new CreateCourseModel();
+            //ccm.Users = new List<CourseUser>() { new CourseUser() { emailId = MvcApplication.userEmail, role = Models.Role.Teacher } };
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(CreateCourseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                CourseAddRequest car = new CourseAddRequest()
+                {
+                    CourseCode = model.CourseCode,
+                    CourseName = model.CourseName,
+                    DesiredSkillSets = model.DesiredSkillSets,
+                    GroupSize = model.GroupSize,
+                    PreferSimiliarSkillSet = model.PreferSimiliarSkillSet,
+                    userList = new List<CourseNewUser>()
+                };
+                switch(model.GroupType)
+                {
+                    case "Study Group":
+                        car.GroupType = "Study";
+                        break;
+                    case "Project Group (Open Projects)":
+                        car.GroupType = "OpenProject";
+                        break;
+                    case "Project Group (Closed Projects)":
+                        car.GroupType = "ClosedProject";
+                        break;
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.Teachers))
+                {
+                    foreach (var user in model.Teachers.Split(','))
+                    {
+                        car.userList.Add(new CourseNewUser()
+                        {
+                            emailId = user,
+                            roleCode = "Teacher"
+                        });
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(model.TAs))
+                {
+                    foreach (var user in model.TAs.Split(','))
+                    {
+                        car.userList.Add(new CourseNewUser()
+                        {
+                            emailId = user,
+                            roleCode = "TA"
+                        });
+                    }
+                }
+                bool result = _courseCom.AddCourse(car).Result;
+                if (result)
+                {
+                    MvcApplication.courses.Add(model.CourseCode, model.CourseName);
+                    return RedirectToAction("Teacher", "Course");
+                }
+            }
+            ModelState.AddModelError("", "Oops! Something wrong happened! Please try again.");
+            return View(model);
+        }
+
+        public ActionResult Teacher()
+        {
+            return View();
         }
     }
 }

@@ -55,9 +55,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CourseMaintenance.cs" />
+    <Compile Include="GroupMaintenance.cs" />
+    <Compile Include="ICourse.cs" />
+    <Compile Include="IGroup.cs" />
+    <Compile Include="IQuestionnaire.cs" />
+    <Compile Include="IRole.cs" />
     <Compile Include="ISecurity.cs" />
+    <Compile Include="IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionnaireMaintenance.cs" />
+    <Compile Include="RoleMaintenance.cs" />
     <Compile Include="SecurityMaintenance.cs" />
+    <Compile Include="UserMaintenance.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GT.CS6460.BuddyUp.DomainDto\GT.CS6460.BuddyUp.DomainDto.csproj">

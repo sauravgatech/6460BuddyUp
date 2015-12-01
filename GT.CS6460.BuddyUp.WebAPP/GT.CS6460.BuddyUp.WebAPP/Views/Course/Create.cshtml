@@ -1,0 +1,96 @@
+﻿@model GT.CS6460.BuddyUp.WebAPP.Models.CreateCourseModel
+@{
+    ViewBag.Title = "Create a Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h4>Hello @ViewBag.User</h4>
+<hr />
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-12">
+        <section id="createCourseForm">
+            @using (Html.BeginForm("Create", "Course", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CourseCode, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.CourseCode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CourseCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CourseName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.CourseName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CourseName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.GroupType, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(m => m.GroupType, new SelectList(new List<string>() { "Study Group", "Project Group (Open Projects)", "Project Group (Closed Projects)" }))
+                        @Html.ValidationMessageFor(m => m.GroupType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.GroupSize, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(m => m.GroupSize, new SelectList(new List<int>() { 2, 3, 4, 5, 6, 7, 8, 9, 10 }))
+                        @Html.ValidationMessageFor(m => m.GroupSize, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DesiredSkillSets, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(m => m.DesiredSkillSets, new Dictionary<string, object>
+                                            {
+                                                {"data-toggle", "tooltip"},
+                                                {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.DesiredSkillSets)}
+                                            })
+                        @Html.ValidationMessageFor(m => m.DesiredSkillSets, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.PreferSimiliarSkillSet)
+                            @Html.LabelFor(m => m.PreferSimiliarSkillSet)
+                        </div>
+                    </div>
+                </div>
+                @*@Html.Partial("_CourseUsers", Model.Users)*@
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Teachers, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @*@Html.TextAreaFor(m => m.Teachers, new { @class = "form-control" })*@
+                        @Html.TextAreaFor(m => m.Teachers, new Dictionary<string, object>
+                                            {
+                                                {"data-toggle", "tooltip"},
+                                                {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.Teachers)}
+                                            })
+                        @Html.ValidationMessageFor(m => m.Teachers, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TAs, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(m => m.TAs, new Dictionary<string, object>
+                                            {
+                                                {"data-toggle", "tooltip"},
+                                                {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.TAs)}
+                                            })
+                        @Html.ValidationMessageFor(m => m.TAs, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create Group" class= "btn btn-info" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+

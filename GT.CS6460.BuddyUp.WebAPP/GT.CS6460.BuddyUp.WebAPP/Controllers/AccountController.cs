@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GT.CS6460.BuddyUp.WebAPP.Models;
+using GT.CS6460.BuddyUp.Platform.Communicator;
+using GT.CS6460.BuddyUp.DomainDto;
 
 namespace GT.CS6460.BuddyUp.WebAPP.Controllers
 {
@@ -17,6 +19,8 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private SecurityCommmunicator _secCom = new SecurityCommmunicator();
+        private UserCommunicator _userCom = new UserCommunicator();
 
         public AccountController()
         {
@@ -72,23 +76,58 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
             {
                 return View(model);
             }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            AuthenticationRequest ar = new AuthenticationRequest();
+            ar.email = model.Email;
+            ar.password = model.Password;
+            Token token = _secCom.Login(ar).Result;
+            if(token != null) //Authenticated
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                MvcApplication.userName = token.user.firstName + " " + token.user.lastName;
+                MvcApplication.userEmail = token.user.emailId;
+                if(token.user.UserCourseDetails.Count == 1)
+                {
+                    UserCourseDetail ugr = token.user.UserCourseDetails.FirstOrDefault();
+                    if(ugr.RoleCode == "Teacher" || ugr.RoleCode == "TA")
+                        return RedirectToAction("UnregisteredTeacher", "Course");
+                    else if(ugr.RoleCode == "Admin")
+                        return RedirectToAction("Admin", "Home");
+                    else
+                        return RedirectToAction("UnregisteredStudent", "Course");
+                }
+                else //User is registered in a course
+                {
+                    foreach (UserCourseDetail ucd in token.user.UserCourseDetails)
+                    {
+                        if (!ucd.courseCode.Equals("default", StringComparison.OrdinalIgnoreCase))
+                            MvcApplication.courses.Add(ucd.courseCode, ucd.CourseName);
+                    }
+                    return RedirectToAction("Teacher", "Course");
+                }
+                
             }
+            else
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+            //var result = 
+
+            //// This doesn't count login failures towards account lockout
+            //// To enable password failures to trigger account lockout, change to shouldLockout: true
+            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            //switch (result)
+            //{
+            //    case SignInStatus.Success:
+            //        return RedirectToLocal(returnUrl);
+            //    case SignInStatus.LockedOut:
+            //        return View("Lockout");
+            //    case SignInStatus.RequiresVerification:
+            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+            //    case SignInStatus.Failure:
+            //    default:
+            //        ModelState.AddModelError("", "Invalid login attempt.");
+            //        return View(model);
+            //}
         }
 
         //
@@ -151,24 +190,43 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                UserAddRequest user = new UserAddRequest()
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    firstName = model.FirstName,
+                    lastName = model.LastName,
+                    emailId = model.Email,
+                    password = model.Password,
+                    securityQuestion = model.SecurityQuestion,
+                    answer = model.SecurityAnswer,
+                    RoleCode = model.Role.ToString(),
+                    isAdmin = model.Role == Models.Role.Admin ? true : false
+                };
 
-                    return RedirectToAction("Index", "Home");
+                bool result = _userCom.AddUser(user).Result;
+                if(result)//User is added
+                {
+                    return RedirectToAction("Login", "Account");
                 }
-                AddErrors(result);
+                
+                //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                //var result = await UserManager.CreateAsync(user, model.Password);
+                //if (result.Succeeded)
+                //{
+                //    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    
+                //    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                //    // Send an email with this link
+                //    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                //    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                //    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                //    return RedirectToAction("Index", "Home");
+                //}
+                //AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
+            AddErrors(new IdentityResult("Oops! Something wrong happened! Please try again."));
             return View(model);
         }
 

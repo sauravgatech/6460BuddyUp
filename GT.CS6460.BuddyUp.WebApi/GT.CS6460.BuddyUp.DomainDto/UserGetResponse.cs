@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Principal;
 
 namespace GT.CS6460.BuddyUp.DomainDto
 {
     /// <summary>
     /// Response when Get User API is called
     /// </summary>
-    public class UserGetResponse
+    public class UserGetResponse //: UserIdentity
     {
         /// <summary>
         /// Email Id of user
@@ -33,6 +34,7 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// Course details of user
         /// </summary>
         public List<UserCourseDetail> UserCourseDetails { get; set; }
+
     }
 
     /// <summary>
@@ -53,6 +55,29 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// <summary>
         /// Role of user in the course
         /// </summary>
-        public string Role { get; set; }
+        public string RoleCode { get; set; }
+
+        /// <summary>
+        /// Description of the role
+        /// </summary>
+        public string RoleDescription { get; set; }
+
+        /// <summary>
+        /// Group Code
+        /// </summary>
+        public string GroupCode { get; set; }
+
+        /// <summary>
+        /// Group Name
+        /// </summary>
+        public string GroupName { get; set; }
+    }
+
+
+    public class UserIdentity : IIdentity
+    {
+        public string AuthenticationType { get { return "GTAuthentication"; } }
+        public string Name { get; protected set; }
+        public bool IsAuthenticated { get; protected set; }
     }
 }

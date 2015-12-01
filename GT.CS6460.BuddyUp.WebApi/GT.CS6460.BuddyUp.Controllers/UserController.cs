@@ -19,9 +19,11 @@ namespace GT.CS6460.BuddyUp.Controllers
     [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
-        public UserController()
-        {
+        private IUser _user;
 
+        public UserController(IUser user)
+        {
+            _user = user;
         }
 
         /// <summary>
@@ -30,9 +32,21 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <param name="request">Data of user to be added</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
         [HttpPost]
-        public HttpResponseMessage Add(UserAddRequest request)
+        public HttpResponseMessage Add([FromBody] UserAddRequest request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _user.Add(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -41,9 +55,22 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <param name="request">Data of user to be updated</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
         [HttpPut]
-        public HttpResponseMessage Update(UserUpdateRequest request)
+        public HttpResponseMessage Update([FromBody] UserUpdateRequest request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _user.Update(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
+
         }
 
         /// <summary>
@@ -52,9 +79,23 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <returns>All the users in the system</returns>
         [ResponseType(typeof(IEnumerable<UserGetResponse>))]
         [HttpGet]
+        //[Authorize]
         public HttpResponseMessage GetAll()
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<UserGetResponse> response = _user.Get();
+                return Request.CreateResponse<IEnumerable<UserGetResponse>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
+
         }
 
         /// <summary>
@@ -66,7 +107,19 @@ namespace GT.CS6460.BuddyUp.Controllers
         [HttpGet]
         public HttpResponseMessage GetById(string emailId)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<UserGetResponse> response = _user.Get(emailId);
+                return Request.CreateResponse<IEnumerable<UserGetResponse>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -78,6 +131,54 @@ namespace GT.CS6460.BuddyUp.Controllers
         public HttpResponseMessage Delete(string emailId)
         {
             return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+        }
+
+        /// <summary>
+        /// Add a user to course
+        /// </summary>
+        /// <param name="request">Request with details of user and course</param>
+        /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
+        [Route("AddUserToCourse")]
+        [HttpPost]
+        public HttpResponseMessage AddUserToCourse([FromBody] UpdateUserCourse request)
+        {
+            try
+            {
+                DomainModelResponse dmr = _user.AddUserToCourse(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
+        }
+
+        /// <summary>
+        /// Add a user to Group
+        /// </summary>
+        /// <param name="request">Request with details of user and group</param>
+        /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
+        [Route("AddUserToGroup")]
+        [HttpPost]
+        public HttpResponseMessage AddUserToGroup([FromBody] UpdateUserGroup request)
+        {
+            try
+            {
+                DomainModelResponse dmr = _user.AddUserToGroup(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
     }
 }

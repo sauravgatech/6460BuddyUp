@@ -8,13 +8,13 @@ namespace GT.CS6460.BuddyUp.EntityModel
     public partial class CourseUserRole : AuditBase
     {
 
-        [Key, ForeignKey("Course"), Column(Order=1)]
+        [Key, ForeignKey("Role"), Column(Order = 1)]
         public int RoleId { get; set; }
 
         [Key, ForeignKey("UserProfile"), Column(Order = 2)]
         public int UserId { get; set; }
 
-        [Key, ForeignKey("Role"), Column(Order = 3)]
+        [Key, ForeignKey("Course"), Column(Order = 3)]
         public int CourseId { get; set; }
 
         [ForeignKey("Group")]

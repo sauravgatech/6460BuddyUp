@@ -54,12 +54,18 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                         CourseCode = c.String(maxLength: 24),
                         CourseName = c.String(maxLength: 128),
                         QuestionnaireId = c.Int(),
+                        PrefGroupTypeId = c.Int(),
+                        PrefGroupSize = c.Int(),
+                        SimilarSkillSetPreffered = c.Boolean(),
+                        DesiredSkillSets = c.String(),
                         LastChangedBy = c.String(maxLength: 32),
                         LastChangedTime = c.DateTime(),
                     })
                 .PrimaryKey(t => t.CourseId)
+                .ForeignKey("dbo.GroupTypes", t => t.PrefGroupTypeId)
                 .ForeignKey("dbo.Questionnaires", t => t.QuestionnaireId)
-                .Index(t => t.QuestionnaireId);
+                .Index(t => t.QuestionnaireId)
+                .Index(t => t.PrefGroupTypeId);
             
             CreateTable(
                 "dbo.CourseUserRoles",
@@ -74,9 +80,9 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                         LastChangedTime = c.DateTime(),
                     })
                 .PrimaryKey(t => new { t.RoleId, t.UserId, t.CourseId })
-                .ForeignKey("dbo.Courses", t => t.RoleId, cascadeDelete: true)
+                .ForeignKey("dbo.Courses", t => t.CourseId, cascadeDelete: true)
                 .ForeignKey("dbo.Groups", t => t.GroupId)
-                .ForeignKey("dbo.Roles", t => t.CourseId, cascadeDelete: true)
+                .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
                 .ForeignKey("dbo.UserProfiles", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.RoleId)
                 .Index(t => t.UserId)
@@ -88,13 +94,29 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                 c => new
                     {
                         GroupId = c.Int(nullable: false, identity: true),
-                        GroupName = c.String(),
-                        Objective = c.String(),
-                        TimeZone = c.String(),
+                        GroupCode = c.String(maxLength: 24),
+                        GroupName = c.String(maxLength: 128),
+                        Objective = c.String(maxLength: 512),
+                        TimeZone = c.String(maxLength: 24),
+                        GroupTypeId = c.Int(nullable: false),
                         LastChangedBy = c.String(maxLength: 32),
                         LastChangedTime = c.DateTime(),
                     })
-                .PrimaryKey(t => t.GroupId);
+                .PrimaryKey(t => t.GroupId)
+                .ForeignKey("dbo.GroupTypes", t => t.GroupTypeId, cascadeDelete: true)
+                .Index(t => t.GroupTypeId);
+            
+            CreateTable(
+                "dbo.GroupTypes",
+                c => new
+                    {
+                        GroupTypeId = c.Int(nullable: false, identity: true),
+                        GroupTypeCode = c.String(maxLength: 24),
+                        Description = c.String(maxLength: 128),
+                        LastChangedBy = c.String(maxLength: 32),
+                        LastChangedTime = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.GroupTypeId);
             
             CreateTable(
                 "dbo.Roles",
@@ -119,6 +141,9 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                         PasswordExpired = c.Boolean(),
                         SecurityQuestion = c.String(maxLength: 128),
                         HashedAnswer = c.String(maxLength: 128),
+                        FirstName = c.String(maxLength: 64),
+                        LastName = c.String(maxLength: 64),
+                        isAdmin = c.Boolean(),
                         LastChangedBy = c.String(maxLength: 32),
                         LastChangedTime = c.DateTime(),
                     })
@@ -145,6 +170,7 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                 c => new
                     {
                         QuestionnaireId = c.Int(nullable: false, identity: true),
+                        QuestionnaireCode = c.String(),
                         QuestionSet = c.String(),
                         IsATemplate = c.Boolean(),
                         LastChangedBy = c.String(maxLength: 32),
@@ -157,19 +183,23 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.Courses", "QuestionnaireId", "dbo.Questionnaires");
+            DropForeignKey("dbo.Courses", "PrefGroupTypeId", "dbo.GroupTypes");
             DropForeignKey("dbo.CourseUserRoles", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.SessionTokens", "UserId", "dbo.UserProfiles");
-            DropForeignKey("dbo.CourseUserRoles", "CourseId", "dbo.Roles");
+            DropForeignKey("dbo.CourseUserRoles", "RoleId", "dbo.Roles");
             DropForeignKey("dbo.CourseUserRoles", "GroupId", "dbo.Groups");
-            DropForeignKey("dbo.CourseUserRoles", "RoleId", "dbo.Courses");
+            DropForeignKey("dbo.Groups", "GroupTypeId", "dbo.GroupTypes");
+            DropForeignKey("dbo.CourseUserRoles", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.AnswerChoices", "QuestionId", "dbo.Questions");
             DropForeignKey("dbo.Questions", "QuestionTypeId", "dbo.QuestionTypes");
             DropIndex("dbo.SessionTokens", new[] { "UserId" });
             DropIndex("dbo.UserProfiles", new[] { "EmailId" });
+            DropIndex("dbo.Groups", new[] { "GroupTypeId" });
             DropIndex("dbo.CourseUserRoles", new[] { "GroupId" });
             DropIndex("dbo.CourseUserRoles", new[] { "CourseId" });
             DropIndex("dbo.CourseUserRoles", new[] { "UserId" });
             DropIndex("dbo.CourseUserRoles", new[] { "RoleId" });
+            DropIndex("dbo.Courses", new[] { "PrefGroupTypeId" });
             DropIndex("dbo.Courses", new[] { "QuestionnaireId" });
             DropIndex("dbo.Questions", new[] { "QuestionTypeId" });
             DropIndex("dbo.AnswerChoices", new[] { "QuestionId" });
@@ -177,6 +207,7 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
             DropTable("dbo.SessionTokens");
             DropTable("dbo.UserProfiles");
             DropTable("dbo.Roles");
+            DropTable("dbo.GroupTypes");
             DropTable("dbo.Groups");
             DropTable("dbo.CourseUserRoles");
             DropTable("dbo.Courses");

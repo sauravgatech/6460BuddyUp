@@ -27,6 +27,8 @@ namespace GT.CS6460.BuddyUp.EntityModel
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<GroupType> GroupTypes { get; set; }
+
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<Questionnaire> Questionnaires { get; set; }

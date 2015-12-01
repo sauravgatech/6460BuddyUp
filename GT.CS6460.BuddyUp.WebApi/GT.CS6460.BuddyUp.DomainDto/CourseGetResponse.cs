@@ -22,11 +22,7 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// <summary>
         /// Questionnaire
         /// </summary>
-       public Questionnaire Questionnaire { get; set; }
+       public string QuestionnaireCode { get; set; }
        
-        /// <summary>
-        /// List of Users
-        /// </summary>
-       public List<UserGetResponse> Users { get; set; }
     }
 }

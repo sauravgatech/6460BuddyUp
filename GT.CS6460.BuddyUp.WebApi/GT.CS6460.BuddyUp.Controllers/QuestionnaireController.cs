@@ -16,9 +16,11 @@ namespace GT.CS6460.BuddyUp.Controllers
     [RoutePrefix("api/questionnaire")]
     public class QuestionnaireController : ApiController
     {
-        public QuestionnaireController()
-        {
+        IQuestionnaire _Questionnaire;
 
+        public QuestionnaireController(IQuestionnaire Questionnaire)
+        {
+            _Questionnaire = Questionnaire;
         }
 
         /// <summary>
@@ -27,32 +29,67 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// <param name="request">Questionnaire</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
         [HttpPost]
-        public HttpResponseMessage Add(Questionnaire request)
+        public HttpResponseMessage Add([FromBody]  QuestionnaireAddRequest request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _Questionnaire.Add(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
-        /// Add a question to questionnaire
+        /// Update Questionnaire
         /// </summary>
-        /// <param name="questionnaireCode">Code of Questionnaire</param>
-        /// <param name="questionCode">Question Code</param>
+        /// <param name="QuestionnaireUpdateRequest">Questionnaire update request</param>
         /// <returns></returns>
         [HttpPut]
-        public HttpResponseMessage Update(string questionnaireCode, string questionCode)
+        public HttpResponseMessage Update([FromBody]  QuestionnaireUpdateRequest request)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                DomainModelResponse dmr = _Questionnaire.Update(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
         /// Get all Questionnaire
         /// </summary>
         /// <returns>Questionnaires</returns>
-        [ResponseType(typeof(IEnumerable<Questionnaire>))]
+        [ResponseType(typeof(IEnumerable<QuestionnaireGetResponse>))]
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<QuestionnaireGetResponse> response = _Questionnaire.Get();
+                return Request.CreateResponse<IEnumerable<QuestionnaireGetResponse>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>
@@ -60,11 +97,23 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// </summary>
         /// <param name="questionnaireCode">Questionnaire code</param>
         /// <returns>Questionnaire</returns>
-        [ResponseType(typeof(Questionnaire))]
+        [ResponseType(typeof(QuestionnaireAddRequest))]
         [HttpGet]
         public HttpResponseMessage Get(string questionnaireCode)
         {
-            return Request.CreateErrorResponse(HttpStatusCode.NotImplemented, "Not Implemented");
+            try
+            {
+                IEnumerable<QuestionnaireGetResponse> response = _Questionnaire.Get(questionnaireCode);
+                return Request.CreateResponse<IEnumerable<QuestionnaireGetResponse>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
         }
 
         /// <summary>

@@ -26,5 +26,46 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// </summary>
         [StringLength(128, ErrorMessage = "lastName can not be greater than 64 characters")]
         public string lastName { get; set; }
+
+        /// <summary>
+        /// Determines if user is an admin
+        /// </summary>
+        public bool? IsAdmin { get; set; }
+    }
+
+    public class UpdateUserCourse
+    {
+        /// <summary>
+        /// Email Id of the user to be updated
+        /// </summary>
+        [Required(ErrorMessage = "Email Id can not be null or empty"), StringLength(128, ErrorMessage = "Email ID can not be greater than 128 characters")]
+        public string emailId { get; set; }
+
+        /// <summary>
+        /// Code of course
+        /// </summary>
+        public string courseCode { get; set; }
+
+        /// <summary>
+        /// Role of user in the course
+        /// </summary>
+        public string RoleCode { get; set; }
+    }
+
+    public class UpdateUserGroup
+    {
+        /// <summary>
+        /// Email Id of the user to be updated
+        /// </summary>
+        [Required(ErrorMessage = "Email Id can not be null or empty"), StringLength(128, ErrorMessage = "Email ID can not be greater than 128 characters")]
+        public string emailId { get; set; }
+        /// <summary>
+        /// Code of course
+        /// </summary>
+        public string courseCode { get; set; }
+        /// <summary>
+        /// Group Code
+        /// </summary>
+        public string GroupCode { get; set; }
     }
 }

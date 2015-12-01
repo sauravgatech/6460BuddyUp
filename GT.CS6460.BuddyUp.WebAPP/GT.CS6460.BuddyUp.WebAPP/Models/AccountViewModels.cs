@@ -48,7 +48,7 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Key, Required]
         [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
@@ -62,8 +62,24 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
         public bool RememberMe { get; set; }
     }
 
+    public enum Role
+    {
+        Student,
+        TA,
+        Teacher,
+        Admin
+    }
+
     public class RegisterViewModel
     {
+        [Required]
+        [Display(Name="First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -89,6 +105,9 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
         [DataType(DataType.Password)]
         [Display(Name = "Security Answer")]
         public string SecurityAnswer { get; set; }
+
+        [Required]
+        public Role Role { get; set; }
     }
 
     public class ResetPasswordViewModel

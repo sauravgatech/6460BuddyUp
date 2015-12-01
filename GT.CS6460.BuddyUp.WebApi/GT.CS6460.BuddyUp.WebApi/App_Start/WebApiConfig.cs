@@ -45,15 +45,9 @@ namespace GT.CS6460.BuddyUp.WebApi
             );
 
             config.Routes.MapHttpRoute(
-                name: "CourseUser",
-                routeTemplate: "api/CourseUser",
-                defaults: new { controller = "CourseUser" }
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "Question",
-                routeTemplate: "api/Question/{QuestionCode}",
-                defaults: new { controller = "Question", QuestionCode = RouteParameter.Optional }
+                name: "Group",
+                routeTemplate: "api/Group/{GroupCode}",
+                defaults: new { controller = "Group", GroupCode = RouteParameter.Optional }
             );
 
             config.Routes.MapHttpRoute(

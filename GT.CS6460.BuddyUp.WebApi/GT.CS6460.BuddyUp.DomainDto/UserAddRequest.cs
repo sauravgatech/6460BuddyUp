@@ -44,5 +44,15 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// </summary>
         [Required(ErrorMessage = "lastName can not be null or empty"), StringLength(128, ErrorMessage = "lastName can not be greater than 64 characters")]
         public string lastName { get; set; }
+
+        /// <summary>
+        /// Is user an admin
+        /// </summary>
+        public bool? isAdmin { get; set; }
+
+        /// <summary>
+        /// Role Code of User
+        /// </summary>
+        public string RoleCode { get; set; }
     }
 }

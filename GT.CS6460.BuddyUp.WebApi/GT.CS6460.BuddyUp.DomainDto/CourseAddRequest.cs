@@ -20,10 +20,42 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// </summary>
         [Required(ErrorMessage = "CourseName is required"), StringLength(128, ErrorMessage = "CourseName can not be greater than 128 characters.")]
         public string CourseName { get; set; }
-
+        
+        /// <summary>
+        /// Group Type
+        /// </summary>
+        public string GroupType { get; set; }
+        /// <summary>
+        /// Group Size
+        /// </summary>
+        public int? GroupSize { get; set; }
+        /// <summary>
+        /// Comma Separated Skill Sets
+        /// </summary>
+        public string DesiredSkillSets { get; set; }
+        /// <summary>
+        /// For group formation if similar skill sets should group together
+        /// </summary>
+        public bool? PreferSimiliarSkillSet { get; set; }
         /// <summary>
         /// Initial Set of User; List of email id
         /// </summary>
-        public List<string> userList { get; set; }
+        public List<CourseNewUser> userList { get; set; }
+    }
+
+    /// <summary>
+    /// Users for the new Course
+    /// </summary>
+    public class CourseNewUser
+    {
+        /// <summary>
+        /// Users Email Id
+        /// </summary>
+        public string emailId { get; set; }
+
+        /// <summary>
+        /// User Role in the course
+        /// </summary>
+        public string roleCode { get; set; }
     }
 }
