@@ -18,6 +18,8 @@ namespace GT.CS6460.BuddyUp.WebApi
             container.RegisterType(typeof(GT.CS6460.BuddyUp.DomainModel.IGroup), typeof(GT.CS6460.BuddyUp.DomainModel.GroupMaintenance));
             container.RegisterType(typeof(GT.CS6460.BuddyUp.DomainModel.IQuestionnaire), typeof(GT.CS6460.BuddyUp.DomainModel.QuestionnaireMaintenance));
             container.RegisterType(typeof(GT.CS6460.BuddyUp.DomainModel.IRole), typeof(GT.CS6460.BuddyUp.DomainModel.RoleMaintenance));
+            container.RegisterType(typeof(GT.CS6460.BuddyUp.DomainModel.ICourseUser), typeof(GT.CS6460.BuddyUp.DomainModel.CourseUserMaintenance));
+            container.RegisterType(typeof(GT.CS6460.BuddyUp.DomainModel.IPost), typeof(GT.CS6460.BuddyUp.DomainModel.PostMaintenance));
             // register all your components with the container here
             // it is NOT necessary to register your controllers
             

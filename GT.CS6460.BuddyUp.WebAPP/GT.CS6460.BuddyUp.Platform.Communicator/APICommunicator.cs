@@ -16,7 +16,7 @@ namespace GT.CS6460.BuddyUp.Platform.Communicator
 
         public APICommunicator(string serverAddress, string contentType = "application/json")
         {
-            _baseAddress = "http://" + serverAddress + "/api/";
+            _baseAddress = serverAddress + "/api/";
             _contentType = contentType;
         }
 
@@ -27,6 +27,21 @@ namespace GT.CS6460.BuddyUp.Platform.Communicator
                 HttpClient client = new HttpClient();
                 var content = new StringContent(jsonRequest, Encoding.UTF8, _contentType);
                 HttpResponseMessage response = client.PostAsync(_baseAddress + APIName, content).Result;
+                return response;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public HttpResponseMessage executePutAPI(string APIName, string jsonRequest)
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+                var content = new StringContent(jsonRequest, Encoding.UTF8, _contentType);
+                HttpResponseMessage response = client.PutAsync(_baseAddress + APIName, content).Result;
                 return response;
             }
             catch (Exception e)

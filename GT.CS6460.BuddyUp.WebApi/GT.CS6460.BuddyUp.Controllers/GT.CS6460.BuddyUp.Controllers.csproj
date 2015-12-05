@@ -58,7 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseController.cs" />
+    <Compile Include="CourseUserController.cs" />
     <Compile Include="GroupController.cs" />
+    <Compile Include="PostController.cs" />
     <Compile Include="QuestionnaireController.cs" />
     <Compile Include="RoleController.cs" />
     <Compile Include="SecurityController.cs" />

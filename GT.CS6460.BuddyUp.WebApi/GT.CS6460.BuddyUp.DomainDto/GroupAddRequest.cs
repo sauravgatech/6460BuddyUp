@@ -27,13 +27,13 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// <summary>
         /// Group Objective
         /// </summary>
-        [Required, StringLength(512, ErrorMessage = "Objective can not be greater than 512 characters")]
+        [Required, StringLength(2048, ErrorMessage = "Objective can not be greater than 2048 characters")]
         public string Objective { get; set; }
 
         /// <summary>
         /// Timezone in which group would be most active
         /// </summary>
-        [Required, StringLength(24, ErrorMessage = "TimeZone can not be greater than 24 characters")]
+        [Required, StringLength(128, ErrorMessage = "TimeZone can not be greater than 24 characters")]
         public string TimeZone { get; set; }
 
         /// <summary>

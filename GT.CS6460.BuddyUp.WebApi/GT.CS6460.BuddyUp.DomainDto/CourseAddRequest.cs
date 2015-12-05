@@ -20,7 +20,11 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// </summary>
         [Required(ErrorMessage = "CourseName is required"), StringLength(128, ErrorMessage = "CourseName can not be greater than 128 characters.")]
         public string CourseName { get; set; }
-        
+        /// <summary>
+        /// Course Description
+        /// </summary>
+        [Required(ErrorMessage = "CourseDescription is required"), StringLength(512, ErrorMessage = "CourseDescription can not be greater than 512 characters.")]
+        public string CourseDescription { get; set; }
         /// <summary>
         /// Group Type
         /// </summary>

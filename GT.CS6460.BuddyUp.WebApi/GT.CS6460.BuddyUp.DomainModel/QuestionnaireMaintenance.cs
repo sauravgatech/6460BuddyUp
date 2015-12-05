@@ -50,7 +50,7 @@ namespace GT.CS6460.BuddyUp.DomainModel
                     QuestionnaireCode = questionnaire.QuestionnaireCode
                 };
                 List<string> questions = questionnaire.QuestionSet.Split(',').ToList();
-                IEnumerable<EntityModel.Question> questionSet = _repQuestion.Get(filter: f => questions.Contains(f.QuestionId.ToString()), includes: "QuestionType,AnswerChoice");
+                IEnumerable<EntityModel.Question> questionSet = _repQuestion.Get(filter: f => questions.Contains(f.QuestionId.ToString()), includes: "QuestionType,AnswerChoices");
                 qr.Questions = new List<DomainDto.Question>();
                 foreach(var q in questionSet)
                 {

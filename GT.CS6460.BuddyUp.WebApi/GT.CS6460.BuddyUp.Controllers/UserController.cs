@@ -180,5 +180,29 @@ namespace GT.CS6460.BuddyUp.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
             }
         }
+
+        /// <summary>
+        /// Remove a user From Group
+        /// </summary>
+        /// <param name="request">Request with details of user and group</param>
+        /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
+        [Route("RemoveUserFromGroup")]
+        [HttpPost]
+        public HttpResponseMessage RemoveUserFromGroup([FromBody] UpdateUserGroup request)
+        {
+            try
+            {
+                DomainModelResponse dmr = _user.RemoveUserFromGroup(request);
+                return Request.CreateResponse(HttpStatusCode.OK, dmr.FinalMessage);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
+        }
     }
 }

@@ -10,7 +10,9 @@ namespace GT.CS6460.BuddyUp.DomainModel
 {
     public interface ICourse
     {
-        IEnumerable<CourseGetResponse> Get(string courseCode = "");
+        IEnumerable<CourseGetResponse> Get(string courseCode);
+
+        IEnumerable<CourseGetResponse> Get();
 
         DomainModelResponse Add(CourseAddRequest request);
 

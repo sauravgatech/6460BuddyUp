@@ -1,8 +1,0 @@
-﻿
-@{
-    ViewBag.Title = "UnregisteredStudent";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h2>Hello @ViewBag.User</h2>
-<h4>You are not registered in any course. Please @Html.ActionLink("register for a course", "Register", "Course", routeValues: null, htmlAttributes: new { id = "courseRegisterLink" }) to start. </h4>

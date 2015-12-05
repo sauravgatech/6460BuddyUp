@@ -76,12 +76,16 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
             {
                 return View(model);
             }
+            MvcApplication.userName = null;
+            MvcApplication.userEmail = null;
+            MvcApplication.courses.Clear();
             AuthenticationRequest ar = new AuthenticationRequest();
             ar.email = model.Email;
             ar.password = model.Password;
             Token token = _secCom.Login(ar).Result;
             if(token != null) //Authenticated
             {
+                MvcApplication.IsAuthenticated = true;
                 MvcApplication.userName = token.user.firstName + " " + token.user.lastName;
                 MvcApplication.userEmail = token.user.emailId;
                 if(token.user.UserCourseDetails.Count == 1)
@@ -92,16 +96,26 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
                     else if(ugr.RoleCode == "Admin")
                         return RedirectToAction("Admin", "Home");
                     else
-                        return RedirectToAction("UnregisteredStudent", "Course");
+                        return RedirectToAction("Student", "Course");
                 }
                 else //User is registered in a course
                 {
+                    UserCourseDetail ugr = token.user.UserCourseDetails.FirstOrDefault();
+
                     foreach (UserCourseDetail ucd in token.user.UserCourseDetails)
                     {
                         if (!ucd.courseCode.Equals("default", StringComparison.OrdinalIgnoreCase))
+                        {
                             MvcApplication.courses.Add(ucd.courseCode, ucd.CourseName);
+                            MvcApplication.courseDescription.Add(ucd.courseCode, ucd.CourseDescription);
+                        }
                     }
-                    return RedirectToAction("Teacher", "Course");
+                    if (ugr.RoleCode == "Teacher" || ugr.RoleCode == "TA")
+                        return RedirectToAction("Teacher", "Course");
+                    else
+                    {
+                        return RedirectToAction("Student", "Course");
+                    }
                 }
                 
             }
@@ -446,10 +460,15 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            MvcApplication.IsAuthenticated = false;
+            MvcApplication.courseDescription.Clear();
+            MvcApplication.courses.Clear();
+            MvcApplication.userName = null;
+            MvcApplication.userEmail = null;
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);            
             return RedirectToAction("Index", "Home");
         }
 

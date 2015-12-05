@@ -18,6 +18,7 @@ namespace GT.CS6460.BuddyUp.DomainModel
         private IRepository<Course> _repCourse;
         private IRepository<UserProfile> _repUserProfile;
         private IRepository<CourseUserRole> _repCourseUserRole;
+        private IRepository<EntityModel.Role> _repRole;
         
         private IUnitOfWork _uow;
         
@@ -33,18 +34,20 @@ namespace GT.CS6460.BuddyUp.DomainModel
                                 IRepository<GroupType> repGroupType,
                                 IRepository<Course> repCourse,
                                 IRepository<UserProfile> repUserProfile,
-                                IRepository<CourseUserRole> repCourseUserRole)
+                                IRepository<CourseUserRole> repCourseUserRole,
+                                IRepository<EntityModel.Role> repRole)
         {
             _repCourse = repCourse.Use(_uow);
             _repGroup = repGroup.Use(_uow);
             _repGroupType = repGroupType.Use(_uow);
             _repUserProfile = repUserProfile.Use(_uow);
             _repCourseUserRole = repCourseUserRole.Use(_uow);
+            _repRole = repRole.Use(_uow);
         }
 
         public IEnumerable<GroupGetResponse> Get(string groupCode = "")
         {
-            List<Group> groups = _repGroup.Get(filter: f => (f.GroupCode == groupCode || groupCode == ""), includes: "GroupType,CourseUserRole,Course,UserProfile").ToList();
+            List<Group> groups = _repGroup.Get(filter: f => (f.GroupCode == groupCode || groupCode == ""), includes: "GroupType,CourseUserRoles,Course,Posts").ToList();
             List<GroupGetResponse> groupGetResponses = new List<GroupGetResponse>();
             foreach(Group grp in groups)
             {
@@ -54,14 +57,44 @@ namespace GT.CS6460.BuddyUp.DomainModel
                     GroupName = grp.GroupName,
                     Objective = grp.Objective,
                     TimeZone = grp.TimeZone,
-                    UserList = new List<string>(),
+                    UserList = new List<GroupUser>(),
+                    GroupPosts = new List<DomainDto.Post>(),
                     GroupTypeCode = grp.GroupType.GroupTypeCode,
-                    CourseCode = grp.CourseUserRoles.First().Course.CourseCode
+                    CourseCode = grp.Course.CourseCode
                 };
                 foreach(var cur in grp.CourseUserRoles)
                 {
-                    ggr.UserList.Add(cur.UserProfile.EmailId);
+                    ggr.UserList.Add(new GroupUser()
+                    {
+                       emailId = cur.UserProfile.EmailId,
+                       name = cur.UserProfile.FirstName + " " + cur.UserProfile.LastName
+                    });
                 }
+                Dictionary<int, DomainDto.Post> postBuilder = new Dictionary<int, DomainDto.Post>();
+                List<EntityModel.Post> posts = grp.Posts.OrderBy(x => x.TimePosted).ToList();
+                foreach(EntityModel.Post post in posts)
+                {
+                    if(post.ParentId.HasValue)
+                    {
+                        postBuilder[post.PostId].ChildPosts.Add(new DomainDto.Post()
+                            {
+                                PostText = post.PostText,
+                                TimePosted = post.TimePosted,
+                                UserName = post.UserName
+                            });
+                    }
+                    else
+                    {
+                        postBuilder.Add(post.PostId, new DomainDto.Post()
+                            {
+                                PostText = post.PostText,
+                                TimePosted = post.TimePosted,
+                                 UserName = post.UserName,
+                                 ChildPosts = new List<DomainDto.Post>()
+                            });
+                    }
+                }
+                ggr.GroupPosts = postBuilder.Values.ToList();
                 groupGetResponses.Add(ggr);
             }
             return groupGetResponses;
@@ -78,14 +111,16 @@ namespace GT.CS6460.BuddyUp.DomainModel
             };
 
             GroupType gt = _repGroupType.Get(filter: f => f.GroupTypeCode == request.GroupTypeCode).FirstOrDefault();
-
+            Course crs = _repCourse.Get(filter: f => f.CourseCode == request.CourseCode).FirstOrDefault();
             grp.GroupTypeId = gt.GroupTypeId;
             grp.GroupType = gt;
+            grp.CourseId = crs.CourseId;
+            grp.Course = crs;
             _repGroup.Add(grp);
             _uow.Commit();
             grp = _repGroup.Get(filter: f => f.GroupCode == request.GroupCode).FirstOrDefault();
 
-            Course crs = _repCourse.Get(filter: f => f.CourseCode == request.CourseCode).FirstOrDefault();
+            
             
             if (request.userList != null)
             {
@@ -162,6 +197,87 @@ namespace GT.CS6460.BuddyUp.DomainModel
         public DomainModelResponse Delete(string groupCode)
         {
             return new DomainModelResponse();
+        }
+
+        public GroupSummaryForUser GetGroupSummary(string userEmail, string courseCode)
+        {
+            GroupSummaryForUser gsfu = new GroupSummaryForUser();
+            UserProfile up = _repUserProfile.Get(filter: f => f.EmailId == userEmail).FirstOrDefault();
+            EntityModel.Role role = _repRole.Get(filter: f => f.RoleCode == "Student").FirstOrDefault();
+            Course course = _repCourse.Get(filter: f => f.CourseCode == courseCode, includes: "Groups,CourseUserRoles").FirstOrDefault();
+
+            CourseUserRole cur = _repCourseUserRole.Get(filter: f => f.CourseId == course.CourseId && f.RoleId == role.RoleId && f.UserId == up.UserId, includes:"Group").FirstOrDefault();
+            if(cur.GroupId.HasValue)
+            {
+                gsfu.registeredGroup = new GroupSummary()
+                    {
+                        GroupCode = cur.Group.GroupCode,
+                        GroupName = cur.Group.GroupName,
+                        activeTimeZone = cur.Group.TimeZone,
+                        Objective = cur.Group.Objective
+                    };
+            }
+            else
+            {
+                gsfu.registeredGroup = null;
+            }
+            List<string> answers = cur.AnswerSet.Split(',').ToList();
+            gsfu.suggestedGroups = new List<GroupSummary>();
+            foreach(CourseUserRole cu in course.CourseUserRoles)
+            {
+                if (cu.UserId != up.UserId && !string.IsNullOrWhiteSpace(cu.AnswerSet))
+                {
+                    int matchPercentage = getMatchPercentage(answers, cu.AnswerSet.Split(',').ToList());
+                    if (matchPercentage >= 50)
+                    {
+                        if (cu.GroupId.HasValue)
+                        {
+                            if (!cur.GroupId.HasValue || cur.GroupId != cu.GroupId)
+                            {
+                                Group grp = _repGroup.Get(filter: f => f.GroupId == cu.GroupId).FirstOrDefault();
+                                gsfu.suggestedGroups.Add(new GroupSummary()
+                                    {
+                                        GroupName = grp.GroupName,
+                                        GroupCode = grp.GroupCode,
+                                        Objective = grp.Objective,
+                                        activeTimeZone = grp.TimeZone
+                                    });
+                            }
+                        }
+                    }
+                }
+            }
+            gsfu.AllGroups = new List<GroupSummary>();
+            foreach(var grp in course.Groups)
+            {
+                if (!cur.GroupId.HasValue || cur.GroupId != grp.GroupId)
+                {
+                    gsfu.AllGroups.Add(new GroupSummary()
+                    {
+                        GroupCode = grp.GroupCode,
+                        GroupName = grp.GroupName,
+                        Objective = grp.Objective,
+                        activeTimeZone = grp.TimeZone
+                    });
+                }
+            }
+            return gsfu;
+        }
+
+        private int getMatchPercentage(List<string> currentAnswers, List<string> givenAnswers)
+        {
+            if(currentAnswers.Count == givenAnswers.Count)
+            {
+                int total = currentAnswers.Count;
+                int match = 0;
+                for(int i = 0; i< currentAnswers.Count; i++)
+                {
+                    if(currentAnswers[i].Equals(givenAnswers[i], StringComparison.OrdinalIgnoreCase))
+                        match++;
+                }
+                return (match * 100) / total;
+            }
+            return 0;
         }
     }
 }

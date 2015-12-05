@@ -204,6 +204,38 @@ namespace GT.CS6460.BuddyUp.DomainModel
             return _securityResponse;
         }
 
+
+        public DomainModelResponse RemoveUserFromGroup(UpdateUserGroup request)
+        {
+            UserProfile up = _repUser.Get(filter: f => f.EmailId == request.emailId).FirstOrDefault();
+            if (up == null)
+            {
+                _securityResponse.addResponse("RemoveUserFromGroup", MessageCodes.ErrDoesnotExist, "User : " + request.emailId);
+                throw _securityResponse;
+            }
+
+            Course course = _repCourse.Get(filter: f => f.CourseCode == request.courseCode).FirstOrDefault();
+            if (course == null)
+            {
+                _securityResponse.addResponse("RemoveUserFromGroup", MessageCodes.ErrDoesnotExist, "Course : " + request.courseCode);
+                throw _securityResponse;
+            }
+
+            CourseUserRole cur = _repCourseUserRole.Get(filter: f => f.UserId == up.UserId && f.CourseId == course.CourseId).FirstOrDefault();
+            if (cur == null)
+            {
+                _securityResponse.addResponse("RemoveUserFromGroup", MessageCodes.ErrDoesnotExist, "CourseUserRole for User : " + request.emailId);
+                throw _securityResponse;
+            }
+
+            cur.GroupId = null;
+            cur.Group = null;
+            _repCourseUserRole.Update(cur);
+            _uow.Commit();
+            _securityResponse.addResponse("RemoveUserFromGroup", MessageCodes.InfoSavedSuccessfully, "CourseUserRole for user : " + request.emailId);
+            return _securityResponse;
+        }
+
         public DomainModelResponse Delete(string emailId)
         {
             return new DomainModelResponse();

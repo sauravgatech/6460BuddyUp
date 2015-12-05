@@ -8,8 +8,16 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(bool logOff = false)
         {
+            if(logOff)
+            {
+                MvcApplication.IsAuthenticated = false;
+                MvcApplication.courseDescription.Clear();
+                MvcApplication.courses.Clear();
+                MvcApplication.userName = null;
+                MvcApplication.userEmail = null;
+            }
             return View();
         }
 

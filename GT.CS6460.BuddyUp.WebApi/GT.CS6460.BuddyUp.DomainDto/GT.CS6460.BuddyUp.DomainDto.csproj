@@ -48,7 +48,9 @@
     <Compile Include="CourseUserUpdateRequest.cs" />
     <Compile Include="GroupAddRequest.cs" />
     <Compile Include="GroupGetResponse.cs" />
+    <Compile Include="GroupSummaryForUser.cs" />
     <Compile Include="GroupUpdateRequest.cs" />
+    <Compile Include="PostAddRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Questionnaire.cs" />

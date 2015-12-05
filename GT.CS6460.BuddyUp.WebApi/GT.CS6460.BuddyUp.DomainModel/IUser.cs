@@ -21,5 +21,7 @@ namespace GT.CS6460.BuddyUp.DomainModel
         DomainModelResponse AddUserToCourse(UpdateUserCourse request);
 
         DomainModelResponse AddUserToGroup(UpdateUserGroup request);
+
+        DomainModelResponse RemoveUserFromGroup(UpdateUserGroup request);
     }
 }

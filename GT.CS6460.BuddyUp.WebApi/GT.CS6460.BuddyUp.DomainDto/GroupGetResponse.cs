@@ -39,6 +39,27 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// <summary>
         /// List of users of group
         /// </summary>
-        public List<string> UserList { get; set; }
+        public List<GroupUser> UserList { get; set; }
+        /// <summary>
+        /// Posts in the Group
+        /// </summary>
+        public List<Post> GroupPosts { get; set; }
+    }
+
+    public class GroupUser
+    {
+        public string emailId {get; set;}
+        public string name { get; set; }
+    }
+
+    public class Post
+    {
+        public string PostText { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime TimePosted { get; set; }
+
+        public List<Post> ChildPosts { get; set; }
     }
 }

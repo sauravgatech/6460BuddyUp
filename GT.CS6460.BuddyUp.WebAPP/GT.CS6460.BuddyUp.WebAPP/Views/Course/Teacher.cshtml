@@ -6,13 +6,19 @@
 <h3>Hello @MvcApplication.userName</h3>
     <div class="row">
         <div class="col-md-12">
-            <h4>Below are the courses you can edit:</h4>
+            <h4>Below are the courses you can view/edit:</h4>
             @foreach (var course in MvcApplication.courses)
             {
                 <div class="col-md-10">
-                    @Html.ActionLink(course.Key, "CourseTeacher", "Course", new { id = course.Key }) - @course.Value
+                    <h4>@Html.ActionLink(course.Key, "CourseTeacher", "Course", new { courseId = course.Key }, null) - @course.Value </h4>
+                    @if (MvcApplication.courseDescription.Keys.Contains(course.Key))
+                    {
+                        <p>
+                            @MvcApplication.courseDescription[course.Key]                        
+                        </p>
+                    }
                 </div>
-    
+                <hr />
             }
             <div class="col-md-10">
                 <input type="button" class="btn btn-info pull-right" value="Create A Course" onclick="@("window.location.href='" + @Url.Action("Create", "Course") + "'");" />

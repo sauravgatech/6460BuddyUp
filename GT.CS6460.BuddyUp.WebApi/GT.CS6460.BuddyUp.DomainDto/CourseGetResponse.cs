@@ -20,9 +20,42 @@ namespace GT.CS6460.BuddyUp.DomainDto
         public string CourseName { get; set; }
 
         /// <summary>
+        /// Course Description
+        /// </summary>
+        public string CourseDescription { get; set; }
+
+        /// <summary>
+        /// Group Type
+        /// </summary>
+        public string GroupType { get; set; }
+        /// <summary>
+        /// Group Size
+        /// </summary>
+        public int? GroupSize { get; set; }
+        /// <summary>
+        /// Comma Separated Skill Sets
+        /// </summary>
+        public string DesiredSkillSets { get; set; }
+        /// <summary>
+        /// For group formation if similar skill sets should group together
+        /// </summary>
+        public bool? PreferSimiliarSkillSet { get; set; }
+
+        /// <summary>
         /// Questionnaire
         /// </summary>
        public string QuestionnaireCode { get; set; }
+        /// <summary>
+        /// List of users
+        /// </summary>
+       public List<CourseUser> UserList { get; set; }
        
+    }
+
+    public class CourseUser
+    {
+        public string EmailID { get; set; }
+        public string Name { get; set; }
+        public string RoleCode { get; set; }
     }
 }

@@ -183,6 +183,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -191,6 +193,12 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <None Include="Properties\PublishProfiles\buddyup.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -200,9 +208,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Group\GroupDetail.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -240,17 +252,27 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Group\GroupDetail.cshtml" />
     <Content Include="Views\Group\GroupSummary.cshtml" />
     <Content Include="Views\Course\JoinACourse.cshtml" />
     <Content Include="Views\Course\UnregisteredTeacher.cshtml" />
     <Content Include="Views\Course\Create.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
-    <Content Include="Views\Course\UnregisteredStudent.cshtml" />
+    <Content Include="Views\Course\Student.cshtml" />
     <Content Include="Views\Course\Register.cshtml" />
     <Content Include="Views\Course\_CourseUsers.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Course\Teacher.cshtml" />
+    <Content Include="Views\Course\_CourseUserDisplay.cshtml" />
+    <Content Include="Views\Course\_CourseSkillSet.cshtml" />
+    <Content Include="Views\Course\_CourseSkill.cshtml" />
+    <Content Include="Views\Course\_CourseQuestionSet.cshtml" />
+    <Content Include="Views\Course\_CourseQuestion.cshtml" />
+    <Content Include="Views\Course\CourseTeacher.cshtml" />
+    <Content Include="Views\Course\_RegistrationQuestion.cshtml" />
+    <Content Include="Views\Group\Create.cshtml" />
+    <Content Include="Views\Group\_GroupPostSet.cshtml" />
+    <Content Include="Views\Group\_GroupPost.cshtml" />
+    <Content Include="Views\Group\_BlankPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

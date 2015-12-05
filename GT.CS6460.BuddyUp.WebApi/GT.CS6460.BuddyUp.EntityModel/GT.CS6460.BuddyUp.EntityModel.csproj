@@ -55,11 +55,12 @@
     <Compile Include="CourseUserRole.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupType.cs" />
-    <Compile Include="Migrations\201511301527543_InitialCreate.cs" />
-    <Compile Include="Migrations\201511301527543_InitialCreate.Designer.cs">
-      <DependentUpon>201511301527543_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201512042311201_InitialCreate.cs" />
+    <Compile Include="Migrations\201512042311201_InitialCreate.Designer.cs">
+      <DependentUpon>201512042311201_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Posts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Questionnaire.cs" />
@@ -73,8 +74,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511301527543_InitialCreate.resx">
-      <DependentUpon>201511301527543_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201512042311201_InitialCreate.resx">
+      <DependentUpon>201512042311201_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

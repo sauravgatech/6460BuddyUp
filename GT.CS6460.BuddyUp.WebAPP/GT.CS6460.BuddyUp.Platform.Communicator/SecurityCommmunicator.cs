@@ -15,7 +15,7 @@ namespace GT.CS6460.BuddyUp.Platform.Communicator
         private APICommunicator apiCom;
         public SecurityCommmunicator()
         {
-            apiCom = new APICommunicator("localhost:1296");
+            apiCom = new APICommunicator("https://microsoft-apiapp7a7b49cda6db439fac257467a5b7d0b8.azurewebsites.net");
 
         }
 

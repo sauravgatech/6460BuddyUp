@@ -1,0 +1,51 @@
+﻿@model GT.CS6460.BuddyUp.WebAPP.Models.Question
+<div class="questionRow">
+    @using (Html.BeginCollectionItem("questions"))
+    {
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        @Html.LabelFor(model => model.QuestionText, htmlAttributes: new { @class = "input-group-addon" })
+                        @Html.EditorFor(model => model.QuestionText, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.QuestionText, "", new { @class = "text-danger" })
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        @Html.LabelFor(model => model.QuestionType, htmlAttributes: new { @class = "input-group-addon" })
+                        @Html.DropDownListFor(model => model.QuestionType, new SelectList(new List<string>() { "MultipleChoice" }), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.QuestionType, "", new { @class = "text-danger" })
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        @Html.LabelFor(model => model.AnswerChoices, htmlAttributes: new { @class = "input-group-addon" })
+                        @Html.TextBoxFor(model => model.AnswerChoices, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AnswerChoices, "", new { @class = "text-danger" })
+                    </div>
+                </td>
+                <td>
+                    @*<button onclick="delete_row(this)">Delete</button>*@
+@*                    <a href="#" onclick="delete_row(this)">Delete</a>*@
+                    <a href="#" class="deleteQuestion">delete</a>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    <script>
+        $("a.deleteQuestion").live("click", function () {
+            $(this).parents("div.questionRow:first").remove();
+        return false;
+    });
+    </script>
+@*<script>
+    function delete_row(e)
+    {
+        e.parentNode.parentNode.parentNode.removeChild(e.parentNode);
+    }
+    </script>*@
+    }

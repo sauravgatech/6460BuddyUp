@@ -17,5 +17,7 @@ namespace GT.CS6460.BuddyUp.DomainModel
         DomainModelResponse Update(GroupUpdateRequest request);
 
         DomainModelResponse Delete(string groupCode);
+
+        GroupSummaryForUser GetGroupSummary(string userEmail, string courseCode);
     }
 }

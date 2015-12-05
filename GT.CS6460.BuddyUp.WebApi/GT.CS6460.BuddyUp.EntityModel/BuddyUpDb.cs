@@ -40,5 +40,7 @@ namespace GT.CS6460.BuddyUp.EntityModel
         public DbSet<SessionToken> SessionTokens { get; set; }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
     }
 }

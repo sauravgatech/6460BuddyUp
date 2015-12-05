@@ -16,6 +16,9 @@ namespace GT.CS6460.BuddyUp.EntityModel
         [StringLength(128)]
         public string CourseName { get; set; }
 
+        [StringLength(2048)]
+        public string CourseDescription { get; set; }
+
         [ForeignKey("Questionnaire")]
         public int? QuestionnaireId { get; set; }
 
@@ -33,5 +36,7 @@ namespace GT.CS6460.BuddyUp.EntityModel
         public virtual Questionnaire Questionnaire { get; set; }
 
         public virtual ICollection<CourseUserRole> CourseUserRoles { get; set; }
+
+        public virtual ICollection<Group> Groups { get; set; }
     }
 }

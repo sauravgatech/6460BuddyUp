@@ -1,0 +1,25 @@
+﻿@model IEnumerable<GT.CS6460.BuddyUp.WebAPP.Models.CourseUser>
+<div id="editorRows">
+    @foreach (var item in Model)
+    {
+        Html.RenderPartial("_CourseUsers", item);
+    }
+</div>
+@Html.ActionLink("Add another...", "BlankEditorRow", null, new { id = "addItem" })
+@*@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    <script>
+        $("#addItem").click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) { $("#editorRows").append(html); }
+            });
+            return false;
+        });
+        $("a.deleteRow").live("click", function () {
+            $(this).parents("div.editorRow:first").remove();
+            return false;
+        });
+    </script>
+}*@

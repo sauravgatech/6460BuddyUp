@@ -53,6 +53,7 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                         CourseId = c.Int(nullable: false, identity: true),
                         CourseCode = c.String(maxLength: 24),
                         CourseName = c.String(maxLength: 128),
+                        CourseDescription = c.String(maxLength: 2048),
                         QuestionnaireId = c.Int(),
                         PrefGroupTypeId = c.Int(),
                         PrefGroupSize = c.Int(),
@@ -96,15 +97,18 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                         GroupId = c.Int(nullable: false, identity: true),
                         GroupCode = c.String(maxLength: 24),
                         GroupName = c.String(maxLength: 128),
-                        Objective = c.String(maxLength: 512),
-                        TimeZone = c.String(maxLength: 24),
+                        Objective = c.String(maxLength: 2048),
+                        TimeZone = c.String(maxLength: 128),
                         GroupTypeId = c.Int(nullable: false),
+                        CourseId = c.Int(nullable: false),
                         LastChangedBy = c.String(maxLength: 32),
                         LastChangedTime = c.DateTime(),
                     })
                 .PrimaryKey(t => t.GroupId)
+                .ForeignKey("dbo.Courses", t => t.CourseId, cascadeDelete: true)
                 .ForeignKey("dbo.GroupTypes", t => t.GroupTypeId, cascadeDelete: true)
-                .Index(t => t.GroupTypeId);
+                .Index(t => t.GroupTypeId)
+                .Index(t => t.CourseId);
             
             CreateTable(
                 "dbo.GroupTypes",
@@ -117,6 +121,23 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
                         LastChangedTime = c.DateTime(),
                     })
                 .PrimaryKey(t => t.GroupTypeId);
+            
+            CreateTable(
+                "dbo.Posts",
+                c => new
+                    {
+                        PostId = c.Int(nullable: false, identity: true),
+                        PostText = c.String(maxLength: 512),
+                        UserName = c.String(maxLength: 32),
+                        TimePosted = c.DateTime(nullable: false),
+                        ParentId = c.Int(),
+                        GroupId = c.Int(nullable: false),
+                        LastChangedBy = c.String(maxLength: 32),
+                        LastChangedTime = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.PostId)
+                .ForeignKey("dbo.Groups", t => t.GroupId, cascadeDelete: true)
+                .Index(t => t.GroupId);
             
             CreateTable(
                 "dbo.Roles",
@@ -188,12 +209,16 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
             DropForeignKey("dbo.SessionTokens", "UserId", "dbo.UserProfiles");
             DropForeignKey("dbo.CourseUserRoles", "RoleId", "dbo.Roles");
             DropForeignKey("dbo.CourseUserRoles", "GroupId", "dbo.Groups");
+            DropForeignKey("dbo.Posts", "GroupId", "dbo.Groups");
             DropForeignKey("dbo.Groups", "GroupTypeId", "dbo.GroupTypes");
+            DropForeignKey("dbo.Groups", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseUserRoles", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.AnswerChoices", "QuestionId", "dbo.Questions");
             DropForeignKey("dbo.Questions", "QuestionTypeId", "dbo.QuestionTypes");
             DropIndex("dbo.SessionTokens", new[] { "UserId" });
             DropIndex("dbo.UserProfiles", new[] { "EmailId" });
+            DropIndex("dbo.Posts", new[] { "GroupId" });
+            DropIndex("dbo.Groups", new[] { "CourseId" });
             DropIndex("dbo.Groups", new[] { "GroupTypeId" });
             DropIndex("dbo.CourseUserRoles", new[] { "GroupId" });
             DropIndex("dbo.CourseUserRoles", new[] { "CourseId" });
@@ -207,6 +232,7 @@ namespace GT.CS6460.BuddyUp.EntityModel.Migrations
             DropTable("dbo.SessionTokens");
             DropTable("dbo.UserProfiles");
             DropTable("dbo.Roles");
+            DropTable("dbo.Posts");
             DropTable("dbo.GroupTypes");
             DropTable("dbo.Groups");
             DropTable("dbo.CourseUserRoles");

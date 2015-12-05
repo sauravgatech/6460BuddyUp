@@ -45,9 +45,9 @@ namespace GT.CS6460.BuddyUp.DomainModel
             _repGroupType = repGroupType.Use(_uow);
         }
 
-        public IEnumerable<CourseGetResponse> Get(string courseCode = "")
+        public IEnumerable<CourseGetResponse> Get(string courseCode)
         {
-            IEnumerable<Course> courses = _repCourse.Get(filter: u => (u.CourseCode == courseCode || courseCode == ""), includes: "Questionnaire");
+            IEnumerable<Course> courses = _repCourse.Get(filter: u => (u.CourseCode == courseCode), includes: "Questionnaire,CourseUserRoles,GroupType");
             List<CourseGetResponse> CourseGetResponses = new List<CourseGetResponse>();
             foreach (Course course in courses)
             {
@@ -55,7 +55,40 @@ namespace GT.CS6460.BuddyUp.DomainModel
                 {
                     CourseCode = course.CourseCode,
                     CourseName = course.CourseName,
-                    QuestionnaireCode = course.Questionnaire.QuestionnaireCode
+                    QuestionnaireCode = course.Questionnaire.QuestionnaireCode,
+                    CourseDescription = course.CourseDescription,
+                    DesiredSkillSets = course.DesiredSkillSets,
+                    GroupSize = course.PrefGroupSize,
+                    GroupType = course.GroupType.GroupTypeCode,
+                    PreferSimiliarSkillSet = course.SimilarSkillSetPreffered,
+                    UserList = new List<CourseUser>()
+                };
+                foreach(var cur in course.CourseUserRoles)
+                {
+                    CourseUser cu = new CourseUser()
+                    {
+                        EmailID = cur.UserProfile.EmailId,
+                        Name = cur.UserProfile.FirstName + " " + cur.UserProfile.LastName,
+                        RoleCode = cur.Role.RoleCode,
+                    };
+                    dr.UserList.Add(cu);
+                }
+                CourseGetResponses.Add(dr);
+            }
+            return CourseGetResponses;
+        }
+
+        public IEnumerable<CourseGetResponse> Get()
+        {
+            IEnumerable<Course> courses = _repCourse.Get(includes: "Questionnaire");
+            List<CourseGetResponse> CourseGetResponses = new List<CourseGetResponse>();
+            foreach (Course course in courses)
+            {
+                CourseGetResponse dr = new CourseGetResponse()
+                {
+                    CourseCode = course.CourseCode,
+                    CourseName = course.CourseName,
+                    QuestionnaireCode = course.Questionnaire != null ? course.Questionnaire.QuestionnaireCode :  null
                 };
                 CourseGetResponses.Add(dr);
             }
@@ -71,6 +104,7 @@ namespace GT.CS6460.BuddyUp.DomainModel
             {
                 CourseCode = request.CourseCode,
                 CourseName = request.CourseName,
+                CourseDescription = request.CourseDescription,
                 LastChangedTime = DateTime.UtcNow,
                 DesiredSkillSets = request.DesiredSkillSets,
                 GroupType = gt,
@@ -118,6 +152,11 @@ namespace GT.CS6460.BuddyUp.DomainModel
             if(request.CourseName != null) //Course name update
             {
                 course.CourseName = request.CourseName;
+                updateCourse = true;
+            }
+            if (request.CourseDescription != null) 
+            {
+                course.CourseDescription = request.CourseDescription;
                 updateCourse = true;
             }
 

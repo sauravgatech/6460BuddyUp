@@ -106,7 +106,11 @@ namespace GT.CS6460.BuddyUp.DomainModel
                 {
                     courseCode = courseUserRole.Course.CourseCode,
                     CourseName = courseUserRole.Course.CourseName,
-                    RoleCode = courseUserRole.Role.RoleCode
+                    CourseDescription = courseUserRole.Course.CourseDescription,
+                    RoleCode = courseUserRole.Role.RoleCode,
+                    GroupCode = courseUserRole.Group != null ? courseUserRole.Group.GroupCode : null,
+                    GroupName = courseUserRole.Group != null ? courseUserRole.Group.GroupName : null,
+                    Objective = courseUserRole.Group != null ? courseUserRole.Group.Objective : null
                 };
                 userCourseDetails.Add(ucd);
             }

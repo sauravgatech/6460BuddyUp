@@ -6,31 +6,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GT.CS6460.BuddyUp.WebAPP.Models
 {
-    public class JoinACourseQuestionnaireModel
-    {
-        [Key]
-        public string  userId {get; set;}
-        public List<QuestionAndAnswerModel> questionAnswerSet;
-    }
-
-    public enum QuestionType
-    {
-        MultipleChoice,
-        FillUpTheBlank
-    }
-    public class QuestionAndAnswerModel
-    {
-        public QuestionType QuestionType { get; set; }
-        [Key]
-        public string Question {get; set;}
-        public string Choice1 { get; set; }
-        public string Choice2 { get; set; }
-        public string Choice3 { get; set; }
-        public string Choice4 { get; set; }
-        public string Answer { get; set; }
-    }
-
     
+       
     public class CreateCourseModel
     {
         [Required]
@@ -43,23 +20,34 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
         [StringLength(128, ErrorMessage = "The Course Name must be less than 128 characters long.")]
         public string CourseName { get; set; }
 
+        [Display(Name = "Course Description")]
+        [Required]
+        [StringLength(2048, ErrorMessage = "The Course Description must be less than 2048 characters long.")]
+        public string CourseDescription { get; set; }
+
         [Display(Name = "Group Type")]
         public string GroupType { get; set; }
 
         [Display(Name = "Preferred Group Size")]
         public int GroupSize { get; set; }
 
-        [Display(Name = "Desired Skill Sets", Description= "Comma separated list of skill sets which would be helpful for group formation.")]
+        //[Display(Name = "Desired Skill Sets")]
+        //public List<Skill> DesiredSkillSets { get; set; }
+
+        [Display(Name = "Comma Separated List of Skill set (This would be used for group suggestions)", Description="Comma Separated list of skill sets")]
         public string DesiredSkillSets { get; set; }
 
         [Display(Name = "Create Group with Similar Skill Sets")]
         public bool PreferSimiliarSkillSet { get; set; }
 
-        [Display(Name = "List of Teachers", Description = "Comma separated list of teachers who would be added to course.")]
-        public string Teachers { get; set; }
+        [Display(Name = "Generate Intelligent Questionnaire for Group Suggestions")]
+        public bool GenerateIntelligentQuestionnaire { get; set; }
 
-        [Display(Name = "List of TAs", Description = "Comma separated list of TAs who would be added to course.")]
-        public string TAs { get; set; }
+        [Display(Name = "List of users. (Teacher is added by default and is required)")]
+        public List<CourseUser> Users { get; set; }
+
+        [Display(Name = "List of additional Questions (Optional)")]
+        public List<Question> Questions { get; set; }
     }
 
     public class CourseUser
@@ -69,5 +57,87 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
 
         [Display(Name = "User Role")]
         public Role role { get; set; }
+    }
+
+    public class Skill
+    {
+        [Display(Name = "Skill")]
+        public string skill { get; set; }
+    }
+
+    public class Question
+    {
+        [Display(Name = "Question")]
+        public string QuestionText {get; set;}
+
+        [Display(Name = "Question Type")]
+        public string QuestionType{get;set;}
+
+        [Display(Name = "Answer Choices")]
+        public string AnswerChoices {get; set;}
+    }
+
+    public class DisplayCourseModel
+    {
+        [Display(Name = "Course Code")]
+        public string CourseCode { get; set; }
+
+        [Display(Name = "Course Name")]
+        public string CourseName { get; set; }
+
+        [Display(Name = "Course Description")]
+        public string CourseDescription { get; set; }
+
+        [Display(Name = "Group Type")]
+        public string GroupType { get; set; }
+
+        [Display(Name = "Preferred Group Size")]
+        public int GroupSize { get; set; }
+
+        [Display(Name = "Desired Skill Sets")]
+        public string DesiredSkillSets { get; set; }
+
+        [Display(Name = "Create Group with Similar Skill Sets?")]
+        public bool PreferSimiliarSkillSet { get; set; }
+
+        [Display(Name = "Current List of users.")]
+        public List<DisplayCourseUser> Users { get; set; }
+
+        [Display(Name = "List of Questions")]
+        public List<DsiplayQuestion> Questions { get; set; }
+    }
+
+    public class DisplayCourseUser
+    {
+        [Display(Name = "Email ID")]
+        public string emailId { get; set; }
+
+        [Display(Name = "Name")]
+        public string name { get; set; }
+
+        [Display(Name = "User Role")]
+        public string role { get; set; }
+    }
+
+    public class DsiplayQuestion
+    {
+        [Display(Name = "Question")]
+        public string QuestionText { get; set; }
+
+        [Display(Name = "Question Type")]
+        public string QuestionType { get; set; }
+
+        [Display(Name = "Answer Choices")]
+        public List<string> AnswerChoices { get; set; }
+
+        public string selectedAnswer { get; set; }
+    }
+
+    public class StudentDashboardModel
+    {
+        public List<string> AllCourseDropDown { get; set; }
+        public List<string> RegisteredCourseDropDown { get; set; }
+        public string selectedCourse { get; set; }
+        public string selectedRegisteredCourse { get; set; }
     }
 }

@@ -12,11 +12,28 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// <summary>
         /// Course Code
         /// </summary>
+        [Required]
         public string courseCode { get; set; }
 
         /// <summary>
         /// Email Id
         /// </summary>
+        [Required]
         public string email { get; set; }
+        /// <summary>
+        /// Role Code
+        /// </summary>
+        [Required]
+        public string RoleCode { get; set; }
+
+        /// <summary>
+        /// Answer Set
+        /// </summary>
+        public string answerSet { get; set; }
+
+        /// <summary>
+        /// Group Code
+        /// </summary>
+        public string GroupCode { get; set; }
     }
 }

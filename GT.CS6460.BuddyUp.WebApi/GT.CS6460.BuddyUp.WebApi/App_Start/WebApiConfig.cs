@@ -61,6 +61,18 @@ namespace GT.CS6460.BuddyUp.WebApi
                 routeTemplate: "api/Role/{RoleCode}",
                 defaults: new { controller = "Role", RoleCode = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "CourseUser",
+                routeTemplate: "api/CourseUser/",
+                defaults: new { controller = "CourseUser" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "Post",
+                routeTemplate: "api/Post/",
+                defaults: new { controller = "Post" }
+            );
         }
     }
 }

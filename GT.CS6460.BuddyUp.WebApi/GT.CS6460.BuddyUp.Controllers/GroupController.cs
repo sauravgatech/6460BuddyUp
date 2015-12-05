@@ -53,7 +53,7 @@ namespace GT.CS6460.BuddyUp.Controllers
         /// </summary>
         /// <param name="request">Group to update</param>
         /// <returns>HttpResponseMessage stating if the operation was successful.</returns>
-        [HttpPost]
+        [HttpPut]
         public HttpResponseMessage Update([FromBody]GroupUpdateRequest request)
         {
             try
@@ -107,6 +107,25 @@ namespace GT.CS6460.BuddyUp.Controllers
             {
                 IEnumerable<GroupGetResponse> response = _group.Get(groupCode);
                 return Request.CreateResponse<IEnumerable<GroupGetResponse>>(HttpStatusCode.OK, response);
+            }
+            catch (DomainModelResponse sdmr)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, sdmr.FinalMessage);
+            }
+            catch (Exception exp)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, MessageCodes.ErrInternalServerError.GetDescription() + exp.Message);
+            }
+        }
+
+        [HttpGet]
+        [ResponseType(typeof(GroupSummaryForUser))]
+        public HttpResponseMessage Get(string userEmail, string courseCode)
+        {
+            try
+            {
+                GroupSummaryForUser response = _group.GetGroupSummary(userEmail, courseCode);
+                return Request.CreateResponse<GroupSummaryForUser>(HttpStatusCode.OK, response);
             }
             catch (DomainModelResponse sdmr)
             {

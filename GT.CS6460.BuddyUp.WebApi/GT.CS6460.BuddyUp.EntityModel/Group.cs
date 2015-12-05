@@ -16,17 +16,24 @@ namespace GT.CS6460.BuddyUp.EntityModel
         [StringLength(128)]
         public string GroupName { get; set; }
 
-        [StringLength(512)]
+        [StringLength(2048)]
         public string Objective { get; set; }
 
-        [StringLength(24)]
+        [StringLength(128)]
         public string TimeZone { get; set; }
 
         [ForeignKey("GroupType")]
         public int GroupTypeId { get; set; }
 
+        [ForeignKey("Course")]
+        public int CourseId { get; set; }
+
         public virtual GroupType GroupType { get; set; }
 
+        public virtual Course Course { get; set; }
+
         public virtual ICollection<CourseUserRole> CourseUserRoles { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

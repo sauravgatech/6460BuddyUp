@@ -3,7 +3,7 @@
     ViewBag.Title = "Create a Course";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h4>Hello @ViewBag.User</h4>
+<h4>Hello @MvcApplication.userName</h4>
 <hr />
 <h2>@ViewBag.Title</h2>
 <div class="row">
@@ -28,6 +28,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(m => m.CourseDescription, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(m => m.CourseDescription, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CourseDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
                     @Html.LabelFor(m => m.GroupType, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(m => m.GroupType, new SelectList(new List<string>() { "Study Group", "Project Group (Open Projects)", "Project Group (Closed Projects)" }))
@@ -42,16 +49,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.DesiredSkillSets, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(m => m.DesiredSkillSets, new Dictionary<string, object>
-                                            {
-                                                {"data-toggle", "tooltip"},
-                                                {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.DesiredSkillSets)}
-                                            })
-                        @Html.ValidationMessageFor(m => m.DesiredSkillSets, "", new { @class = "text-danger" })
+                    @*<div class="col-md-offset-2 col-md-10">
+    @@Html.Partial("_CourseSkillSet", Model.DesiredSkillSets)
+    </div>*@
+                        @Html.LabelFor(m => m.DesiredSkillSets, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(m => m.DesiredSkillSets, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DesiredSkillSets, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <div class="checkbox">
@@ -60,37 +66,95 @@
                         </div>
                     </div>
                 </div>
-                @*@Html.Partial("_CourseUsers", Model.Users)*@
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Teachers, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @*@Html.TextAreaFor(m => m.Teachers, new { @class = "form-control" })*@
-                        @Html.TextAreaFor(m => m.Teachers, new Dictionary<string, object>
-                                            {
-                                                {"data-toggle", "tooltip"},
-                                                {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.Teachers)}
-                                            })
-                        @Html.ValidationMessageFor(m => m.Teachers, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.TAs, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(m => m.TAs, new Dictionary<string, object>
-                                            {
-                                                {"data-toggle", "tooltip"},
-                                                {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.TAs)}
-                                            })
-                        @Html.ValidationMessageFor(m => m.TAs, "", new { @class = "text-danger" })
-                    </div>
-                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create Group" class= "btn btn-info" />
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.GenerateIntelligentQuestionnaire)
+                            @Html.LabelFor(m => m.GenerateIntelligentQuestionnaire)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Users, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.Partial("_CourseUserDisplay", Model.Users)
+                        </div>
+                    </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Questions, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.Partial("_CourseQuestionSet", Model.Questions)
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                @Html.LabelFor(m => m.Teachers, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+
+                    @Html.TextAreaFor(m => m.Teachers, new Dictionary<string, object>
+                                        {
+                                            {"data-toggle", "tooltip"},
+                                            {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.Teachers)}
+                                        })
+                    @Html.ValidationMessageFor(m => m.Teachers, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.TAs, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.TAs, new Dictionary<string, object>
+                                        {
+                                            {"data-toggle", "tooltip"},
+                                            {"title", DisplayAttributeExtension.GetPropertyDescription(() => Model.TAs)}
+                                        })
+                    @Html.ValidationMessageFor(m => m.TAs, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+                @*@Html.TextAreaFor(m => m.Teachers, new { @class = "form-control" })*@
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create Group" class="btn btn-info" />
                     </div>
                 </div>
             }
-        </section>
+</section>
     </div>
 </div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+    <script>
+        $("#addItem").click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) { $("#editorRows").append(html); }
+            });
+            return false;
+        });
+        
+        $("#addSkill").click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) { $("#skillRows").append(html); }
+            });
+            return false;
+        });
 
+        $("#addQuestion").click(function () {
+            $.ajax({
+                url: this.href,
+                cache: false,
+                success: function (html) { $("#questionRows").append(html); }
+            });
+            return false;
+        });
+        $("a.deleteSkill").live("click", function () {
+            $(this).parents("div.skillRow:first").remove();
+            return false;
+        });
+        $("a.deleteRow").live("click", function () {
+            $(this).parents("div.editorRow:first").remove();
+            return false;
+        });
+    </script>
+}

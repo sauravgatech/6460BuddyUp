@@ -53,6 +53,11 @@ namespace GT.CS6460.BuddyUp.DomainDto
         public string CourseName { get; set; }
 
         /// <summary>
+        /// Course Description
+        /// </summary>
+        public string CourseDescription { get; set; }
+
+        /// <summary>
         /// Role of user in the course
         /// </summary>
         public string RoleCode { get; set; }
@@ -71,6 +76,11 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// Group Name
         /// </summary>
         public string GroupName { get; set; }
+
+        /// <summary>
+        /// Group Objective
+        /// </summary>
+        public string Objective { get; set; }
     }
 
 

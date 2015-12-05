@@ -56,13 +56,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseMaintenance.cs" />
+    <Compile Include="CourseUserMaintenance.cs" />
     <Compile Include="GroupMaintenance.cs" />
     <Compile Include="ICourse.cs" />
+    <Compile Include="ICourseUser.cs" />
     <Compile Include="IGroup.cs" />
+    <Compile Include="IPost.cs" />
     <Compile Include="IQuestionnaire.cs" />
     <Compile Include="IRole.cs" />
     <Compile Include="ISecurity.cs" />
     <Compile Include="IUser.cs" />
+    <Compile Include="PostMaintenance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestionnaireMaintenance.cs" />
     <Compile Include="RoleMaintenance.cs" />

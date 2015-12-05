@@ -49,7 +49,11 @@
   <ItemGroup>
     <Compile Include="APICommunicator.cs" />
     <Compile Include="CourseCommunicator.cs" />
+    <Compile Include="CourseUserCommunicator.cs" />
+    <Compile Include="GroupCommunicator.cs" />
+    <Compile Include="PostCommunicator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionnaireCommunicator.cs" />
     <Compile Include="SecurityCommmunicator.cs" />
     <Compile Include="UserCommunicator.cs" />
   </ItemGroup>

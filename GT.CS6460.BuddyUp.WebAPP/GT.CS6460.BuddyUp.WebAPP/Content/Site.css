@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.editor-field textarea {
+    width : 600px;
+    height : 200px;
+}
+
+.ui-dialog,.ui-widget, .ui-widget-content, .ui-corner-all, .foo, .ui-draggable, .ui-resizable 
+{background:white!important}
