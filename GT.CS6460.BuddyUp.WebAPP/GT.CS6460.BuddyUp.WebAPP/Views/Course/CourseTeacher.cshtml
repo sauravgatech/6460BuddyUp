@@ -107,7 +107,7 @@
 <hr />
 <div class="row">
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#users">
-        <span class="glyphicon glyphicon-grain" aria-hidden="true"></span>View All users
+        <span class="glyphicon glyphicon-grain" aria-hidden="true"></span>View All Users
     </button>
     <div id="users" class="collapse">
         <div class="col-md-12">
@@ -127,6 +127,61 @@
                 }
             </dl>
         </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#groups">
+        <span class="glyphicon glyphicon-grain" aria-hidden="true"></span>View All Groups
+    </button>
+    <div id="groups" class="collapse">
+        @if(Model.Groups == null || Model.Groups.Count == 0)
+        {
+           <h4>There are no groups in this course yet.</h4>
+        }
+        else
+        { 
+            int indexSize = Model.Groups.Count;
+            for (int i = 0; i < indexSize; i = i + 3)
+            {
+                <div class="row">
+                    @if (i < indexSize)
+                    {
+                        <div class="col-lg-4">
+                            <h4>@Model.Groups.ElementAt(i).GroupName</h4>
+                            <br />
+                            <span><i>@Model.Groups.ElementAt(i).TimeZone</i></span>
+                            <br />
+                            <span>@Model.Groups.ElementAt(i).Objective</span>
+                            <button type="button" class="btn btn-info pull-right" onclick="@("window.location.href='" + @Url.Action("GroupDetail", "Group", new { groupCode = Model.Groups.ElementAt(i).GroupCode }) + "'") ;"><span class="glyphicon glyphicon-eye-open"></span>  View Group</button>
+                        </div>
+                    }
+                    @if (i + 1 < indexSize)
+                    {
+                        <div class="col-lg-4">
+                            <h4>@Model.Groups.ElementAt(i + 1).GroupName</h4>
+                            <br />
+                            <span><i>@Model.Groups.ElementAt(i + 1).TimeZone</i></span>
+                            <br />
+                            <span>@Model.Groups.ElementAt(i + 1).Objective</span>
+                            <button type="button" class="btn btn-info pull-right" onclick="@("window.location.href='" + @Url.Action("GroupDetail", "Group", new { groupCode = Model.Groups.ElementAt(i + 1).GroupCode }) + "'") ;"><span class="glyphicon glyphicon-eye-open"></span>  View Group</button>
+                        </div>
+                    }
+                    @if (i + 2 < indexSize)
+                    {
+                        <div class="col-lg-4">
+                            <h4>@Model.Groups.ElementAt(i + 2).GroupName</h4>
+                            <br />
+                            <span><i>@Model.Groups.ElementAt(i + 2).TimeZone</i></span>
+                            <br />
+                            <span>@Model.Groups.ElementAt(i + 2).Objective</span>
+                            <button type="button" class="btn btn-info pull-right" onclick="@("window.location.href='" + @Url.Action("GroupDetail", "Group", new { groupCode = Model.Groups.ElementAt(i + 2).GroupCode }) + "'") ;"><span class="glyphicon glyphicon-eye-open"></span>  View Group</button>
+                        </div>
+                    }
+                    </div>
+                <hr />
+            }
+        }
     </div>
 </div>
 <div class="row">

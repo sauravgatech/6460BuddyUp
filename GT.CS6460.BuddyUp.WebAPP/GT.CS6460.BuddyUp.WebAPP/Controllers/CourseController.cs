@@ -104,11 +104,6 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
                     string courseCode = model.selectedRegisteredCourse.Split(stringSeparators, StringSplitOptions.None).FirstOrDefault();
                     return RedirectToAction("GroupSummary", "Group", routeValues: new { courseCode = courseCode });
                 }
-                if(!string.IsNullOrWhiteSpace(model.selectedCourse))
-                {
-                    string courseCode = model.selectedCourse.Split(stringSeparators, StringSplitOptions.None).FirstOrDefault();
-                    return RedirectToAction("JoinACourse", "Course", routeValues: new { courseCode = courseCode });
-                }
             }
             ModelState.AddModelError("", "Oops! Something wrong happened! Please try again.");
             return View(model);
@@ -152,9 +147,19 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
             return View(Model);
         }
 
-        public ActionResult Register()
+        public ActionResult Register(StudentDashboardModel model)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                string[] stringSeparators = new string[] {" :: "};
+                if(!string.IsNullOrWhiteSpace(model.selectedCourse))
+                {
+                    string courseCode = model.selectedCourse.Split(stringSeparators, StringSplitOptions.None).FirstOrDefault();
+                    return RedirectToAction("JoinACourse", "Course", routeValues: new { courseCode = courseCode });
+                }
+            }
+            ModelState.AddModelError("", "Oops! Something wrong happened! Please try again.");
+            return View(model);
         }
 
         public ActionResult Create()
@@ -335,7 +340,9 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
                 dcm.PreferSimiliarSkillSet = (bool)cgr.PreferSimiliarSkillSet;
                 dcm.Users = new List<Models.DisplayCourseUser>();
                 dcm.Questions = new List<Models.DsiplayQuestion>();
+                dcm.Groups = new List<DisplayGroup>();
             }
+
             foreach(var user in cgr.UserList)
             {
                 dcm.Users.Add(new DisplayCourseUser()
@@ -343,6 +350,17 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
                         emailId = user.EmailID,
                         name = user.Name,
                         role = user.RoleCode
+                    });
+            }
+
+            foreach(var grp in cgr.CourseGroups)
+            {
+                dcm.Groups.Add(new DisplayGroup()
+                    {
+                        GroupCode = grp.GroupCode,
+                        GroupName = grp.GroupName,
+                        Objective = grp.Objective,
+                        TimeZone = grp.TimeZone
                     });
             }
 

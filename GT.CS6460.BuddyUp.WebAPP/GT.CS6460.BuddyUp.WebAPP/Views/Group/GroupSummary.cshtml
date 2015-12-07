@@ -89,7 +89,7 @@ else
 {
    
     <h3><u>All Groups for the course are listed below</u></h3>
-    int indexSize = Model.SuggestedGroups.Count;
+    int indexSize = Model.AllGroups.Count;
     for (int i = 0; i < indexSize; i = i + 3)
     {
         <div class="row">
@@ -132,5 +132,9 @@ else
     if(Model.registeredGroup == null)
     { 
         <h3>Didn't find a suitable group?</h3> <button type="button" class="btn btn-info" onclick="@("window.location.href='" + @Url.Action("Create", "Group", new { courseCode = Model.CourseCode }) + "'") ;">Create a Group  <span class="glyphicon glyphicon-gift"></span></button>
+    }
+    if (MvcApplication.userRole == "Student")
+    {
+        <button type="button" class="btn btn-info" onclick="@("window.location.href='" + @Url.Action("Student", "Course") + "'") ;">Change Course</button>
     }
 }

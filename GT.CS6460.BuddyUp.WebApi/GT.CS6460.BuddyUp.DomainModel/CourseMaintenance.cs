@@ -61,7 +61,8 @@ namespace GT.CS6460.BuddyUp.DomainModel
                     GroupSize = course.PrefGroupSize,
                     GroupType = course.GroupType.GroupTypeCode,
                     PreferSimiliarSkillSet = course.SimilarSkillSetPreffered,
-                    UserList = new List<CourseUser>()
+                    UserList = new List<CourseUser>(),
+                    CourseGroups = new List<CourseGroups>()
                 };
                 foreach(var cur in course.CourseUserRoles)
                 {
@@ -71,6 +72,20 @@ namespace GT.CS6460.BuddyUp.DomainModel
                         Name = cur.UserProfile.FirstName + " " + cur.UserProfile.LastName,
                         RoleCode = cur.Role.RoleCode,
                     };
+                    if(cur.Group != null)
+                    {
+                        if (!dr.CourseGroups.Any(x => x.GroupCode == cur.Group.GroupCode))
+                        {
+                            CourseGroups cg = new CourseGroups()
+                            {
+                                GroupCode = cur.Group.GroupCode,
+                                GroupName = cur.Group.GroupName,
+                                Objective = cur.Group.Objective,
+                                TimeZone = cur.Group.TimeZone
+                            };
+                            dr.CourseGroups.Add(cg);
+                        }
+                    }
                     dr.UserList.Add(cu);
                 }
                 CourseGetResponses.Add(dr);

@@ -15,6 +15,7 @@ namespace GT.CS6460.BuddyUp.WebAPP
         public static string userName;
         public static string currentGroupCode;
         public static string currentCourseCode;
+        public static string userRole;
         public static Dictionary<string, string> courses = new Dictionary<string,string>();
         public static Dictionary<string, string> courseDescription = new Dictionary<string, string>();
 

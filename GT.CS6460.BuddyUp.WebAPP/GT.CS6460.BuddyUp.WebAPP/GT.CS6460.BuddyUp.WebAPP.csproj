@@ -258,7 +258,6 @@
     <Content Include="Views\Course\Create.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Course\Student.cshtml" />
-    <Content Include="Views\Course\Register.cshtml" />
     <Content Include="Views\Course\_CourseUsers.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Course\Teacher.cshtml" />

@@ -235,13 +235,16 @@ namespace GT.CS6460.BuddyUp.DomainModel
                             if (!cur.GroupId.HasValue || cur.GroupId != cu.GroupId)
                             {
                                 Group grp = _repGroup.Get(filter: f => f.GroupId == cu.GroupId).FirstOrDefault();
-                                gsfu.suggestedGroups.Add(new GroupSummary()
-                                    {
-                                        GroupName = grp.GroupName,
-                                        GroupCode = grp.GroupCode,
-                                        Objective = grp.Objective,
-                                        activeTimeZone = grp.TimeZone
-                                    });
+                                if (!gsfu.suggestedGroups.Any(x => x.GroupCode == grp.GroupCode))
+                                {
+                                    gsfu.suggestedGroups.Add(new GroupSummary()
+                                        {
+                                            GroupName = grp.GroupName,
+                                            GroupCode = grp.GroupCode,
+                                            Objective = grp.Objective,
+                                            activeTimeZone = grp.TimeZone
+                                        });
+                                }
                             }
                         }
                     }

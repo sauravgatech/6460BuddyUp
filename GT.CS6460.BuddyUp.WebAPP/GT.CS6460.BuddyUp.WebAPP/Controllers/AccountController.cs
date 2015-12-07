@@ -78,6 +78,7 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
             }
             MvcApplication.userName = null;
             MvcApplication.userEmail = null;
+            MvcApplication.userRole = null;
             MvcApplication.courses.Clear();
             AuthenticationRequest ar = new AuthenticationRequest();
             ar.email = model.Email;
@@ -101,6 +102,7 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
                 else //User is registered in a course
                 {
                     UserCourseDetail ugr = token.user.UserCourseDetails.FirstOrDefault();
+                    MvcApplication.userRole = ugr.RoleCode;
 
                     foreach (UserCourseDetail ucd in token.user.UserCourseDetails)
                     {
@@ -468,6 +470,7 @@ namespace GT.CS6460.BuddyUp.WebAPP.Controllers
             MvcApplication.courses.Clear();
             MvcApplication.userName = null;
             MvcApplication.userEmail = null;
+            MvcApplication.userRole = null;
             //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);            
             return RedirectToAction("Index", "Home");
         }

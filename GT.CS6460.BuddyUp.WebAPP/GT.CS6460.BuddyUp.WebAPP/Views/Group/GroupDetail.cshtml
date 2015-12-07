@@ -73,7 +73,6 @@
                         if (Model.GroupPosts == null || Model.GroupPosts.Count == 0)
                         {
                             <span>There are no group discussions for this group. </span>
-                            <button type="button" class="btn btn-info" onclick="addAPost()">Create a post</button>
                         }
                         else
                         {
@@ -151,15 +150,23 @@
     <br />
     <br />
     <br />
-    @if (Model.UserList.Select(x => x.emailId).Contains(MvcApplication.userEmail))
-    {
-        <button type="button" class="btn btn-info pull-right" onclick="@("window.location.href='" + @Url.Action("LeaveGroup", "Group", new { groupCode = Model.GroupCode, courseCode = Model.CourseCode }) + "'") ;"><span class="glyphicon glyphicon-remove-circle"></span>  Leave Group</button>
+    @if(MvcApplication.userRole != "Teacher")
+    { 
+        if (Model.UserList.Select(x => x.emailId).Contains(MvcApplication.userEmail))
+        {
+            <button type="button" class="btn btn-info pull-right" onclick="@("window.location.href='" + @Url.Action("LeaveGroup", "Group", new { groupCode = Model.GroupCode, courseCode = Model.CourseCode }) + "'") ;"><span class="glyphicon glyphicon-remove-circle"></span>  Leave Group</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-info pull-right" onclick="@("window.location.href='" + @Url.Action("JoinGroup", "Group", new { groupCode = Model.GroupCode, courseCode = Model.CourseCode }) + "'") ;"><span class="glyphicon glyphicon-ok-circle"></span> Join Group</button>
+        }
+        <button type="button" class="btn btn-info" onclick="@("window.location.href='" + @Url.Action("GroupSummary", "Group", new { courseCode = Model.CourseCode }) + "'") ;"><span class="glyphicon glyphicon-backward"></span>  Back to Group Summary</button>
     }
     else
     {
-        <button type="button" class="btn btn-info pull-right" onclick="@("window.location.href='" + @Url.Action("JoinGroup", "Group", new { groupCode = Model.GroupCode, courseCode = Model.CourseCode }) + "'") ;"><span class="glyphicon glyphicon-ok-circle"></span> Join Group</button>
+        <button type="button" class="btn btn-info" onclick="@("window.location.href='" + @Url.Action("CourseTeacher", "Course", new { courseId = Model.CourseCode }) + "'") ;"><span class="glyphicon glyphicon-backward"></span>  Back to Course Summary</button>
     }
-    <button type="button" class="btn btn-info" onclick="@("window.location.href='" + @Url.Action("GroupSummary", "Group", new { courseCode = Model.CourseCode }) + "'") ;"><span class="glyphicon glyphicon-backward"></span>  Back to Group Summary</button>
+    
 </div>
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryui")

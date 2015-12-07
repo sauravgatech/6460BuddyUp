@@ -31,6 +31,9 @@
                         </div>
                     }
                 </div>
+            }
+            @using (Html.BeginForm("Register", "Course", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
                 <hr />
                 <div id="NewRegistration">
                     @if(Model.AllCourseDropDown != null && Model.AllCourseDropDown.Count > 0)

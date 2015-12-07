@@ -49,6 +49,8 @@ namespace GT.CS6460.BuddyUp.DomainDto
         /// List of users
         /// </summary>
        public List<CourseUser> UserList { get; set; }
+
+       public List<CourseGroups> CourseGroups { get; set; }
        
     }
 
@@ -57,5 +59,17 @@ namespace GT.CS6460.BuddyUp.DomainDto
         public string EmailID { get; set; }
         public string Name { get; set; }
         public string RoleCode { get; set; }
+    }
+
+
+    public class CourseGroups
+    {
+        public string GroupCode { get; set; }
+
+        public string GroupName { get; set; }
+
+        public string TimeZone { get; set; }
+
+        public string Objective { get; set; }
     }
 }

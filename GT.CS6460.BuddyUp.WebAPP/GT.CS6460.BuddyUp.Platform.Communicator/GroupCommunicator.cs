@@ -15,8 +15,12 @@ namespace GT.CS6460.BuddyUp.Platform.Communicator
         private APICommunicator apiCom;
         public GroupCommunicator()
         {
-            apiCom = new APICommunicator("https://microsoft-apiapp7a7b49cda6db439fac257467a5b7d0b8.azurewebsites.net");
-
+            if (System.Web.Configuration.WebConfigurationManager.AppSettings["APIServer"] != null)
+                apiCom = new APICommunicator(System.Web.Configuration.WebConfigurationManager.AppSettings["APIServer"]);
+            else
+            {
+                apiCom = new APICommunicator("http://localhost:1296/");
+            }
         }
 
         public async Task<GroupSummaryForUser> GetGroupSummary(string userEmail, string courseCode)

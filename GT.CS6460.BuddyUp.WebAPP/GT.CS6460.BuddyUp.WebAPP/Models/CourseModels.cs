@@ -105,6 +105,25 @@ namespace GT.CS6460.BuddyUp.WebAPP.Models
 
         [Display(Name = "List of Questions")]
         public List<DsiplayQuestion> Questions { get; set; }
+
+        public List<DisplayGroup> Groups { get; set; }
+    }
+
+
+    public class DisplayGroup
+    {
+        [Display(Name = "Group Code")]
+        [Key, Required]
+        public string GroupCode { get; set; }
+
+        [Display(Name = "Group Name")]
+        public string GroupName { get; set; }
+
+        [Display(Name = "Timezone")]
+        public string TimeZone { get; set; }
+
+        [Display(Name = "Objective / Summary")]
+        public string Objective { get; set; }
     }
 
     public class DisplayCourseUser
